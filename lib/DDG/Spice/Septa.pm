@@ -6,12 +6,13 @@ use DDG::Spice;
 
 triggers startend => "septa";
 
-spice to => 'http://www3.septa.org/hackathon/NextToArrive/?req1=$1&req2=$2&req3=1&callback=ddg_spice_septa';
+spice to => 'http://www3.septa.org/hackathon/NextToArrive/?req1=$1&req2=$2&req3=10&callback=ddg_spice_septa';
 spice from => '^(.*)\/(.*)';
+spice wrap_jsonp_callback => 1;
 
 my @stops = ("Trenton", "Levittown-Tullytown", "Bristol", "Croydon", "Eddington", "Cornwells Heights", "Torresdale", "Holmesburg Jct", "Tacony", "Bridesburg", "West Trenton", "Yardley", "Woodbourne", "Langhorne", "Trevose", "Somerton", "Forest Hills", "Philmont", "Bethayres", "Meadowbrook", "Rydal", "Noble", "Doylestown", "Delaware Valley College", "New Britain", "Link Belt", "Fortuna", "Lansdale", "Chalfont", "Colmar", "Pennbrook", "North Wales", "Penllyn", "Ambler", "Fort Washington", "Oreland", "North Hills", "Warminster", "Hatboro", "Crestmont", "Roslyn", "Ardsley", "Elkins Park", "Melrose Park", "Fern Rock T C", "Wayne Junction", "Fox Chase", "Ryers", "Cheltenham", "Lawndale", "Olney", "Chestnut Hill East", "Gravers", "Wyndmoor", "Mount Airy", "Sedgwick", "Stenton", "Washington Lane", "Germantown", "Wister", "Chestnut Hill West", "Highland", "St. Martins", "Allen Lane", "Carpenter", "Upsal", "Tulpehocken", "Chelten Avenue", "Queen Lane", "Norristown", "Main Street", "Norristown T.C.", "Conshohocken", "Spring Mill", "Miquon", "Ivy Ridge", "Manayunk", "Wissahickon", "East Falls", "Allegheny", "Downingtown", "Whitford", "Exton", "Malvern", "Paoli", "Daylesford", "Berwyn", "Devon", "Strafford", "Wayne", "St. Davids", "Radnor", "Villanova", "Rosemont", "Bryn Mawr", "Haverford", "Ardmore", "Wynnewood", "Narberth", "Merion", "Overbrook", "30th Street Station", "Suburban Station", "Market East", "Temple University", "North Broad", "Cynwyd", "Bala", "Wynnefield Avenue", "University City", "49th Street", "Angora", "Fernwood-Yeadon", "Lansdowne", "Gladstone", "Clifton-Aldan", "Primos", "Secane", "Morton-Rutledge", "Swarthmore", "Wallingford", "Moylan-Rose Valley", "Media", "Elwyn", "Darby", "Curtis Park", "Sharon Hill", "Folcroft", "Glenolden", "Norwood", "Prospect Park - Moore", "Ridley Park", "Crum Lynne", "Eddystone", "Chester", "Highland Avenue", "Marcus Hook", "Claymont", "Wilmington", "Newark", "Eastwick", "Airport Terminal A", "Airport Terminal B", "Airport Terminal C D", "Airport Terminal E F", "Glenside", "Churchman's Crossing", "Neshaminy Falls", "Willow Grove", "Gwynedd Valley", "North Philadelphia", "North Philadelphia Amtrak", "Thorndale", "Jenkintown Wyncote");
 
-my %exceptions = (
+my %sub_stop_names = (
     'St. Davids' => 'Ste. Davids',
 );
 
@@ -57,8 +58,8 @@ handle remainder => sub {
 
     return unless grep{$to_stop eq $_} @stops;
 
-    $from_stop = $exceptions{$from_stop} if exists $exceptions{$from_stop};
-    $to_stop = $exceptions{$to_stop} if exists $exceptions{$to_stop};
+    $from_stop = $sub_stop_names{$from_stop} if exists $sub_stop_names{$from_stop};
+    $to_stop = $sub_stop_names{$to_stop} if exists $sub_stop_names{$to_stop};
 
     return $from_stop, $to_stop if $from_stop && $to_stop;
 };
