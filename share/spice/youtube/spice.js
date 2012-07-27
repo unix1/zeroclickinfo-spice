@@ -1,44 +1,29 @@
 function ddg_spice_youtube(response) {
+
     entries = response.feed.entry;
     videos = entries.map(function(v){return v.link[0].href});
 
-    console.log(entries);
-    console.log(videos);
-
-//    walkItIn(videos);
-//    walkItIn(["r2McLJZ4ClY","8jljKEpBqkI","8zVtYNFj0zc","w_KRNocRvRY"]);
-    walkItIn(entries);
-
-//	var items = new Array();
-//	items[0] = new Array();
-//    items[0]['a'] = "success!";
-//	items[0]['h'] = query + " (YouTube)";
-//	items[0]['s'] = 'YouTube';
-//	items[0]['u'] = 'http://youtube.com/results?search_query='
-//                  + encodeURI(query);
-//    items[0]["force_big_header"] = true;
-//	
-//	nra(items);
+    buildCarousel(entries);
 }
 
-function walkItIn(videos) {
+
+function buildCarousel(videos) {
+
     // Make sure a property is defined on an object
     function isProp(obj, prop) {
       prop = prop.split('.')
       for (var i = 0, len = prop.length; i < len; i++) {
         if ((obj = obj[prop[i]]) === undefined)
-          return false
+          return false;
       }
-      return true
+      return true;
     }
-
-    console.log(videos);
-
-    var query = decodeURIComponent(rq);
-    query = query.replace(/youtube/i, "")
 
     var LI_WIDTH = 148
     
+    var query = decodeURIComponent(rq);
+    query = query.replace(/youtube/i, "");
+
     var div = d.createElement('div')
     div.id = 'youtube'
 
@@ -103,7 +88,7 @@ function walkItIn(videos) {
       YAHOO.util.Dom.addClass(li, 'item')
 
       vid = videos[i];
-      id = vid.id.$t.split(':').pop()
+      id = vid.id.$t.split('/').pop()
 
       a = d.createElement('a')
       a.href = 'http://youtube.com/watch?v=' + id
@@ -269,7 +254,7 @@ function walkItIn(videos) {
       f: 1,
       a: div,
       h: query + ' (Youtube)',
-      s: 'Youtube',
+      s: 'YouTube',
       u: "http://youtube.com",
       force_big_header: true
     }]
