@@ -140,13 +140,13 @@ function walkItIn(videos) {
     YAHOO.util.Dom.addClass(gl, 'grad')
     nav.appendChild(gl)
 
-    var win, inc, last, off = 0, off2, khanState = 0
+    var win, inc, last, off = 0, off2, carouselState = 0
 
     function pnClasses() {
-      if (khanState > 0) YAHOO.util.Dom.removeClass('preva', 'npah')
+      if (carouselState > 0) YAHOO.util.Dom.removeClass('preva', 'npah')
       else YAHOO.util.Dom.addClass('preva', 'npah')
 
-      if (khanState < last) YAHOO.util.Dom.removeClass('nexta', 'npah')
+      if (carouselState < last) YAHOO.util.Dom.removeClass('nexta', 'npah')
       else YAHOO.util.Dom.addClass('nexta', 'npah')
 
       YAHOO.util.Dom.setStyle('slides', 'padding-left', off + 'px')
@@ -176,7 +176,7 @@ function walkItIn(videos) {
     }
 
     function setSlides() {
-      var mar = '-' + (khanState * LI_WIDTH) + 'px'
+      var mar = '-' + (carouselState * LI_WIDTH) + 'px'
       YAHOO.util.Dom.setStyle('slides', 'margin-left', mar)
     }
 
@@ -184,16 +184,16 @@ function walkItIn(videos) {
       return function (e) {
         preventDefault(e)
 
-        if (khanState === 0 && !next) return
-        if (khanState === last && next) return
+        if (carouselState === 0 && !next) return
+        if (carouselState === last && next) return
 
-        khanState += (next ? 1 : -1) * inc
+        carouselState += (next ? 1 : -1) * inc
 
         // edge conditions when resizing
-        if (khanState < 0) khanState = 0
-        if (khanState > last) khanState = last
+        if (carouselState < 0) carouselState = 0
+        if (carouselState > last) carouselState = last
 
-        highlightDot(khanState / inc)
+        highlightDot(carouselState / inc)
         setSlides()
         pnClasses()
       }
@@ -225,7 +225,7 @@ function walkItIn(videos) {
     function dotHandler(j) {
       return function (e) {
         preventDefault(e)
-        khanState = j * inc
+        carouselState = j * inc
         highlightDot(j)
         setSlides()
         pnClasses()
@@ -240,7 +240,7 @@ function walkItIn(videos) {
       dots = d.createElement('p')
       dots.id = 'dots'
       var lin, j = 0, n = Math.ceil(len / inc)
-      var sel = khanState / inc
+      var sel = carouselState / inc
       for (; j < n; j++) {
         lin = d.createElement('a')
         lin.appendChild(d.createTextNode('\u2022'))
