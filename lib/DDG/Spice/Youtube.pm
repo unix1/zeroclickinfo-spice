@@ -7,7 +7,7 @@ attribution web => ['http://dylansserver.com','Dylan Lloyd'],
 
 triggers any => "youtube";
 
-spice to => 'https://gdata.youtube.com/feeds/api/videos?alt=json&max-results=5&callback={{callback}}&q=$1';
+spice to => 'https://gdata.youtube.com/feeds/api/videos?alt=json&callback={{callback}}&q=$1';
 
 handle remainder => sub {
     return $_;
