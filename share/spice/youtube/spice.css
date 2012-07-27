@@ -1,0 +1,159 @@
+#youtube:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+}
+
+#youtube {
+  zoom: 1;
+  margin: 4px 0;
+}
+
+#youtube div.nav {
+  position: relative;
+  overflow: hidden;
+}
+
+#youtube #frame {
+  margin: 0 25px;
+  overflow: hidden;
+}
+
+#youtube ul {
+  margin: 0;
+  padding: 0;
+}
+
+#youtube li.item {
+  float: left;
+  list-style-type: none;
+  width: 146px;
+  height: 130px;
+  margin: 0;
+  padding-top: 5px;
+  border: 1px solid transparent;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  text-align: center;
+  overflow: hidden;
+}
+
+#youtube li.item:hover {
+  background: url("http://duckduckgo.com/assets/results_highlight_bg.v101.png") repeat-x;
+  background-color: #eaeaea;
+  border: 1px solid #bfbfbf;
+  cursor: pointer;
+}
+
+#youtube li.sel, #youtube li.sel:hover {
+  background-image: none !important;
+  background-color: #eaeaea;
+  border: 1px solid #fff;
+}
+
+#youtube li.item a {
+  color: #333;
+}
+
+#youtube li.item a:hover {
+  text-decoration: none;
+}
+
+#youtube li.item img {
+  margin: 0 auto 5px auto;
+  max-width: 120px;
+}
+
+#youtube li.item p {
+  max-width: 120px;
+  margin: 0 auto;
+  font-size: 12px;
+}
+
+#youtube a.npa {
+  font-size: 30px;
+  color: #bfbfbf;
+  position: absolute;
+  top: 30px;
+  text-decoration: none !important;
+}
+
+#youtube a.npah {
+  color: #eee !important;
+}
+
+#youtube #nexta {
+  right: 0;
+}
+
+#youtube #preva {
+  left: 0;
+}
+
+#youtube div.grad {
+  position: absolute;
+  width: 0;
+  height: 100%;
+  top: 0;
+}
+
+#youtube #gr {
+  right: 25px;
+  background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(249, 249, 249, 1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(249,249,249,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(249, 249, 249, 1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(249, 249, 249, 1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(249, 249, 249, 1) 100%); /* IE10+ */
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(249, 249, 249, 1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='#f9f9f9', GradientType=1); /* IE6-9 */
+}
+
+#youtube #gl {
+  left: 25px;
+  background: -moz-linear-gradient(left, rgba(249, 249, 249, 1) 0%, rgba(255, 255, 255, 0) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(249, 249, 249, 1)), color-stop(100%, rgba(255, 255, 255, 0))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, rgba(249, 249, 249, 1) 0%, rgba(255, 255, 255, 0) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, rgba(249, 249, 249, 1) 0%, rgba(255, 255, 255, 0) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, rgba(249, 249, 249, 1) 0%, rgba(255, 255, 255, 0) 100%); /* IE10+ */
+  background: linear-gradient(to right, rgba(249, 249, 249, 1) 0%, rgba(255, 255, 255, 0) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#00ffffff', GradientType=1 ); /* IE6-9 */
+}
+
+#youtube #emb {
+  position: relative;
+  display: none;
+  background: #f9f9f9;
+  left: 0;
+  right: 0;
+  padding: 2px 0 7px 0;
+  z-index: 2;
+}
+
+#youtube #emb iframe {
+  width: 100%;
+  height: 100%;
+}
+
+#youtube #dots {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+}
+
+#youtube #dots a {
+  padding: 0 2px;
+  font-size: 16px;
+  color: #ccc;
+  text-decoration: none !important;
+}
+
+#youtube #dots a.selected {
+  color: #1168cc;
+}
