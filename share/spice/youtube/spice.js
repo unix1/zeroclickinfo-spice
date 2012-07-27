@@ -253,7 +253,7 @@ function buildCarousel(videos) {
     var items = [{
       f: 1,
       a: div,
-      h: query + ' (Youtube)',
+      h: query + ' (YouTube)',
       s: 'YouTube',
       u: "http://youtube.com",
       force_big_header: true
