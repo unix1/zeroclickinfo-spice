@@ -1,3 +1,16 @@
+#zero_click_abstract {
+  margin: 0 5px !important;
+  padding: 0 !important;
+}
+
+#zero_click_abstract {
+  position: relative;
+}
+
+#zero_click_image {
+  display: none !important;
+}
+
 #youtube:after {
 	visibility: hidden;
 	display: block;
