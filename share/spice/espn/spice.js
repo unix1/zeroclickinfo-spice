@@ -337,7 +337,6 @@ function Carousel(videos) {
     var win, inc, last, off = 0, off2, carouselState = 0
 
     function pnClasses() {
-        console.log("pnClasses");
       if (carouselState > 0) YAHOO.util.Dom.removeClass('preva', 'npah')
       else YAHOO.util.Dom.addClass('preva', 'npah')
 
@@ -354,45 +353,51 @@ function Carousel(videos) {
     }
 
     this.setup = function() {
-      //win = YAHOO.util.Dom.getRegion('frame').width
+      //win = YAHOO.util.Dom.getRegion('frame').width;
       win = 168;
-      inc = Math.floor(win / this.width)
-      last = Math.max(0, len - (len % inc))
+      inc = Math.floor(win / this.width);
+      last = Math.max(0, len - (len % inc));
 
-      var extra = win - (inc * this.width)
-      off = Math.floor(extra / 2)  // will center the vids
-      off2 = extra - off
+      var extra = win - (inc * this.width);
+      off = Math.floor(extra / 2);  // will center the vids
+      off2 = extra - off;
 
-      pnClasses()
-      makeDots()
+      var buttons = ['nexta','preva'];
+      [ true, false ].map(function(next){
+          YAHOO.util.Event.addListener(
+              buttons.shift(), 'click', wrapCB(next)
+          )
+      });
+      pnClasses();
+      makeDots();
     }
 
     function preventDefault(e) {
-      e.preventDefault ? e.preventDefault() : e.returnValue = false
+      e.preventDefault ? e.preventDefault() : e.returnValue = false;
     }
 
-    function setSlides() {
+    function setSlides(carouselState) {
       //var mar = '-' + (carouselState * this.width) + 'px'
-      var mar = '-' + (carouselState * 148) + 'px'
-      YAHOO.util.Dom.setStyle('slides', 'margin-left', mar)
+      var mar = '-' + (carouselState * 148) + 'px';
+      YAHOO.util.Dom.setStyle('slides', 'margin-left', mar);
     }
 
     function wrapCB(next) {
       return function (e) {
-        preventDefault(e)
+        preventDefault(e);
 
-        if (carouselState === 0 && !next) return
-        if (carouselState === last && next) return
+        if (carouselState === 0 && !next) return;
+        if (carouselState === last && next) return;
 
-        carouselState += (next ? 1 : -1) * inc
+        carouselState += (next ? 1 : -1) * inc;
 
         // edge conditions when resizing
-        if (carouselState < 0) carouselState = 0
-        if (carouselState > last) carouselState = last
+        if (carouselState < 0) carouselState = 0;
+        if (carouselState > last) carouselState = last;
 
-        highlightDot(carouselState / inc)
-        setSlides()
-        pnClasses()
+        highlightDot(carouselState / inc);
+        setSlides(carouselState);
+        pnClasses();
       }
     }
 
@@ -402,7 +407,6 @@ function Carousel(videos) {
       na.href = '#'
       na.id = id
       YAHOO.util.Dom.addClass(na, 'npa')
-      YAHOO.util.Event.addListener(na, 'click', wrapCB(next))
       nav.appendChild(na)
     }
 
