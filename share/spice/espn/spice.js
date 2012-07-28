@@ -2,6 +2,7 @@ var tabs = '';
 var news = '';
 var team = '';
 var stats = '';
+var videos = '';
 var gamelog = '';
 var headshot = '';
 var playerID = 0;
@@ -9,9 +10,10 @@ var teamID = 0;
 var teamCity = '';
 var teamName = '';
 var baseURL = 'http://espn.com';
+var carousel = new Object();
 
 var callsMade = 0;
-var numberOfCalls = 3;
+var numberOfCalls = 4;
 
 items = [];
 items[0] = [];
@@ -38,6 +40,8 @@ function ddg_spice_espn(response) {
             + teamID + "/foo/bar/ddg_spice_espn_team");
     nrj("/js/spice/espn/basketball/nba/teams/"
             + teamID + "/events/dates/ddg_spice_espn_events");
+    nrj("/js/spice/youtube/" + encodeURIComponent(player.fullName)
+            + "/ddg_spice_espn_videos");
 
     stats = player.stats;
     items[0]['u'] = baseURL + "/nba/player/_/id/" + playerID;
@@ -48,7 +52,7 @@ function ddg_spice_espn(response) {
 
     console.log(player);
 
-    tabs = [ 'news', 'stats', 'team', 'gamelog' ];
+    tabs = [ 'news', 'stats', 'team', 'gamelog', 'videos' ];
     tabs = tabs.map(function(s, index, array) {
         return '<span id="espn_zci_' + s + '_link">'
             +  s.charAt(0).toUpperCase() + s.slice(1)
@@ -223,6 +227,259 @@ function ddg_spice_espn_team(response) {
     ddg_spice_espn_bind();
 }
 
+function Carousel(videos) {
+
+    this.isProp = function (prop) {
+      for (var i = 0, len = prop.length; i < len; i++) {
+        if ((this[prop[i]]) === undefined)
+          return false;
+      }
+      return true;
+    }
+
+    this.width = 148
+    
+    this.div = d.createElement('div')
+    this.div.id = 'espn_zci_videos'
+
+    var emb = d.createElement('div')
+    emb.id = 'emb'
+    this.div.appendChild(emb)
+
+    var nav = d.createElement('div')
+    YAHOO.util.Dom.addClass(nav, 'nav')
+
+    var frame = d.createElement('div')
+    frame.id = 'frame'
+
+    var len = videos.length
+    var end = this.width * len
+
+    var ul = d.createElement('ul')
+    ul.id = 'slides'
+    YAHOO.util.Dom.setStyle(ul, 'width', end + 'px')
+
+    function spin(id) {
+      return function (e) {
+        preventDefault(e)
+
+        var j = 0
+        ul.childNodes.map(function(li) {
+                YAHOO.util.Dom.removeClass(li, 'sel')
+        });
+        YAHOO.util.Dom.addClass(this.parentNode, 'sel')
+
+        var ne = d.createElement('iframe')
+        ne.src = [
+            'https://www.youtube.com/embed/' + id + '?'
+          , 'autoplay=1'
+          , 'wmode=opaque'
+          , 'iv_load_policy=3'
+          , 'autohide=1'
+          , 'version=3'
+          , 'enablejsapi=1'
+        ].join('&')
+
+        YAHOO.util.Dom.setAttribute(ne, 'allowFullScreen', true)
+        YAHOO.util.Dom.setAttribute(ne, 'webkitAllowFullScreen', true)
+        YAHOO.util.Dom.setAttribute(ne, 'mozallowfullscreen', true)
+        ne.frameBorder = 0
+
+        emb.innerHTML = ''  // clear
+        emb.appendChild(ne)
+        YAHOO.util.Dom.setStyle('emb', 'display', 'block')
+      }
+    }
+
+    var i, li, img, a, id, vid, p, txt
+    for (i = 0; i < len; i++) {
+      li = d.createElement('li')
+      YAHOO.util.Dom.addClass(li, 'item')
+
+      vid = videos[i];
+      id = vid.id.$t.split('/').pop()
+
+      a = d.createElement('a')
+      a.href = 'http://youtube.com/watch?v=' + id
+
+      YAHOO.util.Event.addListener(a, 'click', spin(id))
+
+      img = d.createElement('img')
+      if (!this.isProp(vid, 'media$group.media$thumbnail')) continue
+      img.src = vid.media$group.media$thumbnail[0].url
+
+      p = d.createElement('p')
+      if (!this.isProp(vid, 'title.$t')) continue
+      txt = d.createTextNode(vid.title.$t)
+      p.appendChild(txt)
+
+      a.appendChild(img)
+      a.appendChild(p)
+
+      li.appendChild(a)
+      ul.appendChild(li)
+    }
+
+    frame.appendChild(ul)
+    nav.appendChild(frame)
+
+    // gradient fades
+    var gr = d.createElement('div')
+    gr.id = 'gr'
+    YAHOO.util.Dom.addClass(gr, 'grad')
+    nav.appendChild(gr)
+
+    var gl = d.createElement('div')
+    gl.id = 'gl'
+    YAHOO.util.Dom.addClass(gl, 'grad')
+    nav.appendChild(gl)
+
+    var win, inc, last, off = 0, off2, carouselState = 0
+
+    function pnClasses() {
+        console.log("pnClasses");
+      if (carouselState > 0) YAHOO.util.Dom.removeClass('preva', 'npah')
+      else YAHOO.util.Dom.addClass('preva', 'npah')
+
+      if (carouselState < last) YAHOO.util.Dom.removeClass('nexta', 'npah')
+      else YAHOO.util.Dom.addClass('nexta', 'npah')
+
+      YAHOO.util.Dom.setStyle('slides', 'padding-left', off + 'px')
+      YAHOO.util.Dom.setStyle('gl', 'width', off + 'px')
+      YAHOO.util.Dom.setStyle('gr', 'width', off2 + 'px')
+
+      // 16/9 Aspect Ratio + menu
+      var hei = Math.floor(win * 0.5625) + 30
+      YAHOO.util.Dom.setStyle('emb', 'height', hei + 'px')
+    }
+
+    this.setup = function() {
+      //win = YAHOO.util.Dom.getRegion('frame').width
+      win = 168;
+      inc = Math.floor(win / this.width)
+      last = Math.max(0, len - (len % inc))
+
+      var extra = win - (inc * this.width)
+      off = Math.floor(extra / 2)  // will center the vids
+      off2 = extra - off
+
+      pnClasses()
+      makeDots()
+    }
+
+    function preventDefault(e) {
+      e.preventDefault ? e.preventDefault() : e.returnValue = false
+    }
+
+    function setSlides() {
+      //var mar = '-' + (carouselState * this.width) + 'px'
+      var mar = '-' + (carouselState * 148) + 'px'
+      YAHOO.util.Dom.setStyle('slides', 'margin-left', mar)
+    }
+
+    function wrapCB(next) {
+      return function (e) {
+        preventDefault(e)
+
+        if (carouselState === 0 && !next) return
+        if (carouselState === last && next) return
+
+        carouselState += (next ? 1 : -1) * inc
+
+        // edge conditions when resizing
+        if (carouselState < 0) carouselState = 0
+        if (carouselState > last) carouselState = last
+
+        highlightDot(carouselState / inc)
+        setSlides()
+        pnClasses()
+      }
+    }
+
+    function makeNav(txt, id, next) {
+      var na = d.createElement('a')
+      na.appendChild(d.createTextNode(txt))
+      na.href = '#'
+      na.id = id
+      YAHOO.util.Dom.addClass(na, 'npa')
+      YAHOO.util.Event.addListener(na, 'click', wrapCB(next))
+      nav.appendChild(na)
+    }
+
+    makeNav('>', 'nexta', true)
+    makeNav('<', 'preva', false)
+
+    this.div.appendChild(nav)
+
+    function highlightDot(j) {
+      var dots = d.getElementById('dots').childNodes
+      var len = dots.length
+      var k = 0
+      for (; k < len; k++) YAHOO.util.Dom.removeClass(dots[k], 'selected')
+      YAHOO.util.Dom.addClass(dots[j], 'selected')
+    }
+
+    function dotHandler(j) {
+      return function (e) {
+        preventDefault(e)
+        carouselState = j * inc
+        highlightDot(j)
+        setSlides()
+        pnClasses()
+      }
+    }
+
+    // dots
+    function makeDots() {
+      var dots = d.getElementById('dots')
+      if (dots) dots.parentNode.removeChild(dots)
+      //if (win < 500) return
+      dots = d.createElement('p')
+      dots.id = 'dots'
+      var lin, j = 0, n = Math.ceil(len / inc)
+      var sel = carouselState / inc
+      for (; j < n; j++) {
+        lin = d.createElement('a')
+        lin.appendChild(d.createTextNode('\u2022'))
+        lin.href = '#'
+        if (j === sel) YAHOO.util.Dom.addClass(lin, 'selected')
+        YAHOO.util.Event.addListener(lin, 'click', dotHandler(j))
+        dots.appendChild(lin)
+      }
+      var div = d.getElementById("espn_zci_videos");
+      div.appendChild(dots)
+    }
+
+    var resize
+    YAHOO.util.Event.addListener(window, 'resize', function () {
+      clearTimeout(resize)
+      resize = setTimeout(setup, 400)  // tune
+    })
+
+    var u = 'http://youtube.com/'
+    if (this.isProp(videos, 'feed.title.$t')) {
+      var q = res.feed.title.$t.split(': ')[1]
+      if (q) u += 'search?page_search_query=' + q.replace(/\s/g, '+')
+    }
+
+    YAHOO.util.Event.addListener(emb, 'click', function (e) {
+      preventDefault(e)
+      this.innerHTML = ''  // clear video
+      YAHOO.util.Dom.setStyle('emb', 'display', 'none')
+    })
+}
+
+function ddg_spice_espn_videos(response) {
+    entries = response.feed.entry;
+    videos = entries.map(function(v){return v.link[0].href});
+
+    carousel = new Carousel(entries);
+
+    videos = carousel.div.outerHTML;
+
+    ddg_spice_espn_bind();
+}
+
 function ddg_spice_espn_bind() {
     if (++callsMade != numberOfCalls) return;
 
@@ -230,9 +487,12 @@ function ddg_spice_espn_bind() {
                   + news
                   + team
                   + stats
-                  + gamelog;
+                  + gamelog
+                  + videos;
 
-	nra(items);
+    nra(items, 0, true);
+
+    carousel.setup();
 
     var table = document.getElementById("espn_zci_stats");
     for (var i = 0; i < table.rows.length; i++) {
@@ -242,7 +502,8 @@ function ddg_spice_espn_bind() {
     ids = [ "espn_zci_gamelog_link",
             "espn_zci_stats_link",
             "espn_zci_team_link",
-            "espn_zci_news_link"
+            "espn_zci_news_link",
+            "espn_zci_videos_link"
           ];
 
     var bgtabs = [];
