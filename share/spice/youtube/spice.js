@@ -10,21 +10,12 @@ function Carousel(videos) {
 
     this.width = 148
     
-    var query = decodeURIComponent(rq);
-    query = query.replace(/youtube/i, "");
-
-    var div = d.createElement('div')
-    div.id = 'youtube'
+    this.div = d.createElement('div')
+    this.div.id = 'youtube'
 
     var emb = d.createElement('div')
     emb.id = 'emb'
-
-    YAHOO.util.Event.addListener(emb, 'click', function (e) {
-      preventDefault(e)
-      this.innerHTML = ''  // clear video
-      YAHOO.util.Dom.setStyle('emb', 'display', 'none')
-    })
-    div.appendChild(emb)
+    this.div.appendChild(emb)
 
     var nav = d.createElement('div')
     YAHOO.util.Dom.addClass(nav, 'nav')
@@ -39,14 +30,14 @@ function Carousel(videos) {
     ul.id = 'slides'
     YAHOO.util.Dom.setStyle(ul, 'width', end + 'px')
 
-    function clickA(id) {
+    function spin(id) {
       return function (e) {
         preventDefault(e)
 
         var j = 0
-        for (; j < len; j++) {
-          YAHOO.util.Dom.removeClass(ul.childNodes[j], 'sel')
-        }
+        ul.childNodes.map(function(li) {
+                YAHOO.util.Dom.removeClass(li, 'sel')
+        });
         YAHOO.util.Dom.addClass(this.parentNode, 'sel')
 
         var ne = d.createElement('iframe')
@@ -82,7 +73,7 @@ function Carousel(videos) {
       a = d.createElement('a')
       a.href = 'http://youtube.com/watch?v=' + id
 
-      YAHOO.util.Event.addListener(a, 'click', clickA(id))
+      YAHOO.util.Event.addListener(a, 'click', spin(id))
 
       img = d.createElement('img')
       if (!this.isProp(vid, 'media$group.media$thumbnail')) continue
@@ -187,7 +178,7 @@ function Carousel(videos) {
     makeNav('>', 'nexta', true)
     makeNav('<', 'preva', false)
 
-    div.appendChild(nav)
+    this.div.appendChild(nav)
 
     function highlightDot(j) {
       var dots = d.getElementById('dots').childNodes
@@ -208,6 +199,7 @@ function Carousel(videos) {
     }
 
     // dots
+    var div = this.div;
     function makeDots() {
       var dots = d.getElementById('dots')
       if (dots) dots.parentNode.removeChild(dots)
@@ -239,16 +231,11 @@ function Carousel(videos) {
       if (q) u += 'search?page_search_query=' + q.replace(/\s/g, '+')
     }
 
-
-    var items = [{
-      f: 1,
-      a: div,
-      h: query + ' (YouTube)',
-      s: 'YouTube',
-      u: "http://youtube.com",
-      force_big_header: true
-    }]
-    nra(items, 0, true)  // add to page
+    YAHOO.util.Event.addListener(emb, 'click', function (e) {
+      preventDefault(e)
+      this.innerHTML = ''  // clear video
+      YAHOO.util.Dom.setStyle('emb', 'display', 'none')
+    })
 }
 
 function ddg_spice_youtube(response) {
@@ -257,6 +244,20 @@ function ddg_spice_youtube(response) {
     videos = entries.map(function(v){return v.link[0].href});
 
     var carousel = new Carousel(entries);
+
+    var query = decodeURIComponent(rq);
+    query = query.replace(/youtube/i, "");
+
+    var items = [{
+      f: 1,
+      a: carousel.div,
+      h: query + ' (YouTube)',
+      s: 'YouTube',
+      u: "http://youtube.com",
+      force_big_header: true
+    }];
+
+    nra(items, 0, true);
+
     carousel.setup();
-    test = carousel;
 }
