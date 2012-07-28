@@ -1,4 +1,4 @@
-function buildCarousel(videos) {
+function Carousel(videos) {
 
     this.isProp = function (prop) {
       for (var i = 0, len = prop.length; i < len; i++) {
@@ -85,11 +85,11 @@ function buildCarousel(videos) {
       YAHOO.util.Event.addListener(a, 'click', clickA(id))
 
       img = d.createElement('img')
-      if (!isProp(vid, 'media$group.media$thumbnail')) continue
+      if (!this.isProp(vid, 'media$group.media$thumbnail')) continue
       img.src = vid.media$group.media$thumbnail[0].url
 
       p = d.createElement('p')
-      if (!isProp(vid, 'title.$t')) continue
+      if (!this.isProp(vid, 'title.$t')) continue
       txt = d.createTextNode(vid.title.$t)
       p.appendChild(txt)
 
@@ -132,7 +132,7 @@ function buildCarousel(videos) {
       YAHOO.util.Dom.setStyle('emb', 'height', hei + 'px')
     }
 
-    function setup() {
+    this.setup = function() {
       win = YAHOO.util.Dom.getRegion('frame').width
       inc = Math.floor(win / this.width)
       last = Math.max(0, len - (len % inc))
@@ -150,7 +150,8 @@ function buildCarousel(videos) {
     }
 
     function setSlides() {
-      var mar = '-' + (carouselState * this.width) + 'px'
+      //var mar = '-' + (carouselState * this.width) + 'px'
+      var mar = '-' + (carouselState * 148) + 'px'
       YAHOO.util.Dom.setStyle('slides', 'margin-left', mar)
     }
 
@@ -233,7 +234,7 @@ function buildCarousel(videos) {
     })
 
     var u = 'http://youtube.com/'
-    if (isProp(videos, 'feed.title.$t')) {
+    if (this.isProp(videos, 'feed.title.$t')) {
       var q = res.feed.title.$t.split(': ')[1]
       if (q) u += 'search?page_search_query=' + q.replace(/\s/g, '+')
     }
@@ -248,7 +249,6 @@ function buildCarousel(videos) {
       force_big_header: true
     }]
     nra(items, 0, true)  // add to page
-    setup()
 }
 
 function ddg_spice_youtube(response) {
@@ -256,6 +256,7 @@ function ddg_spice_youtube(response) {
     entries = response.feed.entry;
     videos = entries.map(function(v){return v.link[0].href});
 
-    var carousel = buildCarousel(entries);
+    var carousel = new Carousel(entries);
+    carousel.setup();
     test = carousel;
 }
