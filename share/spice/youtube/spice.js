@@ -1,25 +1,14 @@
-function ddg_spice_youtube(response) {
-
-    entries = response.feed.entry;
-    videos = entries.map(function(v){return v.link[0].href});
-
-    buildCarousel(entries);
-}
-
-
 function buildCarousel(videos) {
 
-    // Make sure a property is defined on an object
-    function isProp(obj, prop) {
-      prop = prop.split('.')
+    this.isProp = function (prop) {
       for (var i = 0, len = prop.length; i < len; i++) {
-        if ((obj = obj[prop[i]]) === undefined)
+        if ((this[prop[i]]) === undefined)
           return false;
       }
       return true;
     }
 
-    var LI_WIDTH = 148
+    this.width = 148
     
     var query = decodeURIComponent(rq);
     query = query.replace(/youtube/i, "");
@@ -44,7 +33,7 @@ function buildCarousel(videos) {
     frame.id = 'frame'
 
     var len = videos.length
-    var end = LI_WIDTH * len
+    var end = this.width * len
 
     var ul = d.createElement('ul')
     ul.id = 'slides'
@@ -145,10 +134,10 @@ function buildCarousel(videos) {
 
     function setup() {
       win = YAHOO.util.Dom.getRegion('frame').width
-      inc = Math.floor(win / LI_WIDTH)
+      inc = Math.floor(win / this.width)
       last = Math.max(0, len - (len % inc))
 
-      var extra = win - (inc * LI_WIDTH)
+      var extra = win - (inc * this.width)
       off = Math.floor(extra / 2)  // will center the vids
       off2 = extra - off
 
@@ -161,7 +150,7 @@ function buildCarousel(videos) {
     }
 
     function setSlides() {
-      var mar = '-' + (carouselState * LI_WIDTH) + 'px'
+      var mar = '-' + (carouselState * this.width) + 'px'
       YAHOO.util.Dom.setStyle('slides', 'margin-left', mar)
     }
 
@@ -260,4 +249,13 @@ function buildCarousel(videos) {
     }]
     nra(items, 0, true)  // add to page
     setup()
+}
+
+function ddg_spice_youtube(response) {
+
+    entries = response.feed.entry;
+    videos = entries.map(function(v){return v.link[0].href});
+
+    var carousel = buildCarousel(entries);
+    test = carousel;
 }
