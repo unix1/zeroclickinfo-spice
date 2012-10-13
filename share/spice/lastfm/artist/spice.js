@@ -10,7 +10,7 @@ function ddg_spice_lastfm_artist_all(lastfm) {
         similar = '<i>Similar to: </i>';
         for(var i = 0;i < lastfm.artist.similar.artist.length;i++) {
             var artist = lastfm.artist.similar.artist[i];
-            similar += '<a onclick="fl=1" href="/?q=artist+' + encodeURIComponent(artist.name) + '">' + artist.name + '</a>';
+            similar += '<a onclick="fl=1" href="/?q=' + encodeURIComponent(artist.name) + '">' + artist.name + '</a>';
             if(i !== lastfm.artist.similar.artist.length-1) {
                 similar += ', ';
             }
@@ -44,8 +44,8 @@ function ddg_spice_lastfm_artist_all(lastfm) {
         
         console.log(small);
         if(!small) {
-            abstract.innerHTML += '<div style="padding-top:5px;"></div>' + similar + '. <i>See also:</i> ' + 
-                    albums + songs + ' <a href="' + lastfm.artist.url + '">More at Last.fm</a>' + '<div style="clear:both;"></div>';
+            abstract.innerHTML += '<div style="padding-top:5px;"></div>' + similar + '. ' + '<i>See also:</i> ' + 
+                    albums + songs + ' <a onclick="fl=1" href="' + lastfm.artist.url + '">More at Last.fm</a>' + '<div style="clear:both;"></div>';
             
         } else {
             items[0]['h'] = lastfm.artist.name;
