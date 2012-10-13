@@ -1,0 +1,31 @@
+ul.similar {
+    padding-left: 0px;
+    display: inline;
+}
+
+li.similar {
+	display: inline-block;
+	margin: 2px 2px;
+	padding: 2px 4px;
+	background-color: #444;
+	list-style-type: none;
+	border-radius: 3px;
+	font-size: 12px;
+	font-family: sans-serif;
+	font-weight: bold;
+}
+
+li.similar a {
+	color: #FFF;
+	padding: 0px 7px;
+}
+
+li.similar:hover {
+	background-color: #367EDB;
+}
+
+li.similar a:hover {
+	color: #FFF;
+	text-decoration: none;
+	text-shadow: none;
+}
