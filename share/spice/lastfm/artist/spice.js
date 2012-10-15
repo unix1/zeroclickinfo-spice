@@ -11,7 +11,7 @@ function ddg_spice_lastfm_artist_all(lastfm) {
         if(similar_length > 3) {
             similar_length = 3;
         }
-        similar = '<i>Similar to: </i><ul class="similar">';
+        similar = '<span style="font-size:12px; font-weight: bold;">Similar to: </span><ul class="similar">';
         for(var i = 0;i < similar_length;i++) {
             var artist = lastfm.artist.similar.artist[i];
             similar += '<li class="similar"><a onclick="fl=1" href="/?q=' + encodeURIComponent(artist.name) + '">' + artist.name + '</a></li>';
@@ -37,18 +37,18 @@ function ddg_spice_lastfm_artist_all(lastfm) {
                 '<a style="display: inline;" id="expand" href="javascript:;" onclick="DDG.toggle(\'ellipsis\', 1); DDG.toggle(\'first\', -1); DDG.toggle(\'expand\', -1);"><span style="color: rgb(119, 119, 119); font-size: 11px; ">More...<span></a>' + 
                 '<span id="ellipsis" style="display: none;">' + summary + '</span>';
             }
-            items[0]['a'] = summary + '<div style="clear:both;"></div>' + '<div class="similar">' + similar + '</div>' + '<i>See also:</i> ' + 
-            albums + songs + '<div style="clear:both;"></div>';
+            items[0]['a'] = summary + '<div style="clear:both;"></div>' + '<div class="similar">' + similar + '</div>' + '<span style="font-size: 12px;"><b>See also:</b> ' + 
+            albums + songs + '</span><div style="clear:both;"></div>';
         } else {
             rest = false;
-            items[0]['a'] =  '<div class="similar">' + similar + '</div>' + '<i>See also:</i> ' + albums + songs + '<div style="clear:both;"></div>';
+            items[0]['a'] =  '<div class="similar">' + similar + '</div>' + '<span style="font-size: 12px;"><b>See also:</b> ' + albums + songs + '</span><div style="clear:both;"></div>';
         }
         
         console.log(small);
         if(!small) {
-            var style = '<style type="text/css">ul.similar {    padding-left: 0px;    display: inline;}li.similar { display: inline-block;  margin: 2px 2px;    padding: 2px 4px;   background-color: #444;  list-style-type: none;  border-radius: 3px; font-size: 12px;    font-family: sans-serif;    font-weight: bold;}li.similar a {   color: #FFF;    padding: 0px 7px;}li.similar:hover {    background-color: #367EDB;}li.similar a:hover {    color: #FFF;    text-decoration: none;  text-shadow: none;}</style>';
-            abstract.innerHTML += style + '<div style="padding-top:5px;" class="similar">' + similar + '</div><i>See also:</i> ' + 
-                    albums + songs + ' <a onclick="fl=1" href="' + lastfm.artist.url + '">More at Last.fm</a>';
+            var style = '<style type="text/css">ul.similar {    padding-left: 0px;    display: inline;}li.similar { display: inline-block;  margin: 2px 2px;    padding: 2px 4px;   background-color: #858585;  list-style-type: none;  border-radius: 3px; font-size: 12px;    font-family: sans-serif;    font-weight: bold;}li.similar a {   color: #FFF;    padding: 0px 7px;}li.similar:hover {    background-color: #367EDB;}li.similar a:hover {    color: #FFF;    text-decoration: none;  text-shadow: none;}</style>';
+            abstract.innerHTML += style + '<div style="padding-top:5px;" class="similar">' + similar + '</div><span style="font-size: 12px;"><b>See also:</b> ' + 
+                    albums + songs + ' <a onclick="fl=1" href="' + lastfm.artist.url + '">More at Last.fm</a></span>';
         } else {
             items[0]['h'] = lastfm.artist.name;
             items[0]['s'] = 'Last.fm';
