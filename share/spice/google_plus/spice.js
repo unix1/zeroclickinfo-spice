@@ -1,11 +1,55 @@
+function tile(display) {
+    var inner_div, outer_div, url, img;
+
+    //Create div tags
+    inner_div = d.createElement('div');
+    outer_div = d.createElement('div');
+    
+    //Create the link
+    url = d.createElement('a');
+    url.href = display.url;
+
+    //Create the image
+    img = d.createElement('img');
+    img.src = display.image.url;
+    img.width = display.image.width;
+    img.height = display.image.height;
+
+    //Make the image clickable
+    YAHOO.util.Dom.setStyle(inner_div, 'margin-bottom', '10px');
+    url.appendChild(img);
+    inner_div.appendChild(url);
+
+    //This makes the caption for the image
+    url = d.createElement('a');
+    url.href = display.url;
+    url.innerHTML = display.title;
+    inner_div.appendChild(url);
+
+    div.appendChild(d.createElement('br'));
+    
+    //Set the style
+    YAHOO.util.Dom.addClass(inner_div, 'inline highlight_zero_click1 highlight_zero_click_wrapper');	
+	YAHOO.util.Dom.setStyle(inner_div,'margin-right','10px'); 
+	YAHOO.util.Dom.setStyle(inner_div,'margin-left','10px'); 
+	YAHOO.util.Dom.setStyle(inner_div,'margin-top','10px'); 
+	YAHOO.util.Dom.setStyle(inner_div,'float','left'); 
+	YAHOO.util.Dom.setStyle(inner_div,'width','100px');  
+    
+    outer_div.appendChild(inner_div);
+
+    return outer_div.innerHTML;
+}
+
 function ddg_spice_google_plus(google) {
+    console.log(google);
 	var out = '';
 	var query = DDG.get_query(); //"google+ this is a test"; 
 	var re = /\s*(google\+|google\splus|g\+|gplus|google\+\suser|g\+\suser|google\splus\suser|google\+\sprofile|g\+\sprofile|gplus\sprofile|gplus\suser|g\splus\sprofile|g\splus\suser)\s*/;
 	var query = query.replace(re, "");
 
 	if(google.kind === "plus#peopleFeed" && google.items.length > 0) {
-		var tmp, div, div2, link, img, item, limit;
+		var item, limit, image;
 
 		//Sometimes, the API returns a lot of results even if we
 		//asked for only five. (e.g. coke)
@@ -19,43 +63,22 @@ function ddg_spice_google_plus(google) {
 
 		for (var i = 0;i < limit;i++) {
 		    item = google.items[i];
-
-		    div = d.createElement("div");
-		    div2 = d.createElement("div");
-
-		    link = d.createElement("a");
-		    link.href = '/?q=google%2B+userid:' + item.id;
-
-		    img = d.createElement('img');
-		    img.src = "/iu/?u=" + item.image.url;
-		    YAHOO.util.Dom.setStyle(img, "margin", '0 auto 0 auto');
-		    YAHOO.util.Dom.setStyle(div,'margin-bottom', '10px');
-		    YAHOO.util.Dom.setStyle(div,'text-align', 'center');
-		    link.appendChild(img);
-		    div.appendChild(link);
-
-		    link = d.createElement('a');
-		    link.href = '/?q=google%2B+userid:' + item.id;
-		    link.innerHTML = item.displayName;
-		    div.appendChild(link);
-		    div.appendChild(d.createElement('br'));
-	      
-		    YAHOO.util.Dom.addClass(div, 'inline highlight_zero_click1 highlight_zero_click_wrapper');
-		    YAHOO.util.Dom.setStyle(div, "float", "left");
-		    YAHOO.util.Dom.setStyle(div, "margin", "0px 20px 0px 0px");
-		    YAHOO.util.Dom.setStyle(div, "padding", "5px");
-		    YAHOO.util.Dom.setStyle(div, "max-width", "80px");
-
-		    div2.appendChild(div);
-
-		    out += div2.innerHTML;
+            image = item.image.url.replace(/sz=50$/, "sz=100");
+            out += tile({
+                title: item.displayName,
+                url: '/?q=google%2B+userid:' + item.id,
+                image: {
+                    url: image,
+                    width: 100,
+                    height: 100
+                }
+            });
 		}
-
 		out += '</div>';
 
 		var items = new Array();
 		items[0] = new Array();
-		items[0]['a'] = out;
+		items[0]['a'] = out + '<div style="clear:both;"></div>';
 		items[0]['h'] = 'Google+ Users (' + query + ')';
 		items[0]['s'] = 'Google+';
 		items[0]['f'] = 1;
