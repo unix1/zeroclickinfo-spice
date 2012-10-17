@@ -1,53 +1,9 @@
-function tile(display) {
-    var inner_div, outer_div, url, img;
-
-    //Create div tags
-    inner_div = d.createElement('div');
-    outer_div = d.createElement('div');
-    
-    //Create the link
-    url = d.createElement('a');
-    url.href = display.url;
-
-    //Create the image
-    img = d.createElement('img');
-    img.src = display.image.url;
-    img.width = display.image.width;
-    img.height = display.image.height;
-
-    //Make the image clickable
-    YAHOO.util.Dom.setStyle(inner_div, 'margin-bottom', '10px');
-    url.appendChild(img);
-    inner_div.appendChild(url);
-
-    //This makes the caption for the image
-    url = d.createElement('a');
-    url.href = display.url;
-    url.innerHTML = display.title;
-    inner_div.appendChild(url);
-
-    div.appendChild(d.createElement('br'));
-    
-    //Set the style
-    YAHOO.util.Dom.addClass(inner_div, 'inline highlight_zero_click1 highlight_zero_click_wrapper');	
-	YAHOO.util.Dom.setStyle(inner_div,'margin-right','10px'); 
-	YAHOO.util.Dom.setStyle(inner_div,'margin-left','10px'); 
-	YAHOO.util.Dom.setStyle(inner_div,'margin-top','10px'); 
-	YAHOO.util.Dom.setStyle(inner_div,'float','left'); 
-	YAHOO.util.Dom.setStyle(inner_div,'width','100px');  
-    
-    outer_div.appendChild(inner_div);
-
-    return outer_div.innerHTML;
-}
-
 function ddg_spice_google_plus(google) {
-    console.log(google);
 	var out = '';
 	var query = DDG.get_query(); //"google+ this is a test"; 
 	var re = /\s*(google\+|google\splus|g\+|gplus|google\+\suser|g\+\suser|google\splus\suser|google\+\sprofile|g\+\sprofile|gplus\sprofile|gplus\suser|g\splus\sprofile|g\splus\suser)\s*/;
 	var query = query.replace(re, "");
-
+    var display = [];
 	if(google.kind === "plus#peopleFeed" && google.items.length > 0) {
 		var item, limit, image;
 
@@ -59,22 +15,20 @@ function ddg_spice_google_plus(google) {
 			limit = google['items'].length;
 		}
 
-		out += '<div style="float:left;">';
-
 		for (var i = 0;i < limit;i++) {
 		    item = google.items[i];
             image = item.image.url.replace(/sz=50$/, "sz=100");
-            out += tile({
+            display[i] = {
                 title: item.displayName,
-                url: '/?q=google%2B+userid:' + item.id,
+                url: item.url,
                 image: {
                     url: image,
                     width: 100,
                     height: 100
                 }
-            });
+            };
 		}
-		out += '</div>';
+        out += DDG.tile(display);
 
 		var items = new Array();
 		items[0] = new Array();

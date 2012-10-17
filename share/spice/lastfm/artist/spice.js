@@ -43,25 +43,26 @@ function ddg_spice_lastfm_artist_all(lastfm) {
                 '<a style="display: inline;" id="expand" href="javascript:;" onclick="DDG.toggle(\'ellipsis\', 1); DDG.toggle(\'first\', -1); DDG.toggle(\'expand\', -1);"><span style="color: rgb(119, 119, 119); font-size: 11px; ">More...<span></a>' + 
                 '<span id="ellipsis" style="display: none;">' + summary + '</span>';
             }
-            items[0]['a'] = summary + '<div style="clear:both;"></div>' + '<div class="similar">' + similar + '</div>' + '<span style="font-size: 12px;"><i>See also:</i> ' + albums + songs + '</span><div style="clear:both;"></div>';
+            items[0]['a'] = '<span style="font-size: 12px;">'  + summary + '<div style="clear:both;"></div>' + '<div class="similar">' + similar + '</div>' + '<i>See also:</i> ' + albums + songs + '</span><div style="clear:both;"></div>';
         } else {
             rest = false;
             items[0]['a'] = '<div class="similar">' + similar + '</div>' + '<span style="font-size: 12px;"><i>See also:</i> ' + albums + songs + '</span><div style="clear:both;"></div>';
         }
         
         console.log(small);
-        if(!small) {
-            abstract.innerHTML += '<div style="padding-top:5px;" class="similar">' + similar + '</div><span style="font-size: 12px;"><i>See also:</i> ' + 
-                    albums + songs + ' <a onclick="fl=1" href="' + lastfm.artist.url + '">More at Last.fm</a></span>';
-        } else {
+        //if(!small) {
+        //    abstract.innerHTML += '<div style="padding-top:5px;" class="similar">' + similar + '</div><span style="font-size: 12px;"><i>See also:</i> ' + 
+        //            albums + songs + ' <a onclick="fl=1" href="' + lastfm.artist.url + '">More at Last.fm</a></span>';
+        //} else {
             items[0]['h'] = lastfm.artist.name;
             items[0]['s'] = 'Last.fm';
             items[0]['force_big_header'] = true;
             items[0]['force_space_after'] = true;
             items[0]['f'] = 1;
             items[0]['u'] = lastfm.artist.url;
+            items[0]['is_top'] = 1;
             nra(items,1,1);
-        }
+        //}
     }
 }
 

@@ -16,7 +16,7 @@ handle remainder => sub {
 	if($query =~ /userid:(\d+)$/) {
 		return $1.'-'; 
 	}
-    if($query =~ /((?:[a-zA-Z]|\s)+)$/) {
+    if($query =~ /(.+)$/) {
 		return '-'.$1;
 	}
 	return;

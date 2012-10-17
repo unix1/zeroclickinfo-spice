@@ -1,8 +1,7 @@
 function ddg_spice_octopart(response) {
-
         // no results
     if (response.hits > 0) {
-
+        console.log(response);
         var parts = response.results;
 
         /**************************
