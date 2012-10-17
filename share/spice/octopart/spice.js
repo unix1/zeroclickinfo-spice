@@ -106,7 +106,8 @@ function ddg_spice_octopart(response) {
                 i: part.images.length ? part.images[0].url_55px : '',
                 s: 'Octopart',
                 u: part.detail_url,
-                t: heading
+                t: heading,
+                'is_top': 1
             });
 
         }
