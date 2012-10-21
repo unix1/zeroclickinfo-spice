@@ -19,7 +19,7 @@ function ddg_spice_deb_version(ir)
 
     // begin table 
     out += '<table id="debianVersions">\n';
-    out += '<tr><th>Debian Version</th><th>Package Version</th><th>Architecture</th></tr>';
+    out += '<tr><th>Release</th><th>Package Version</th><th>Architecture</th></tr>';
 
     // Loop through and place each version in it's owrn row
     for (var i = 0; i < ir.length-1; i++) {
@@ -36,7 +36,8 @@ function ddg_spice_deb_version(ir)
     out+= "</table>";
 
     items[0]['a'] = out;
-    items[0]['h'] = 'Versions of ' + program + ' in Debian';
+    items[0]['h'] = program + ' (Debian Packages)';
+    items[0]['force_big_header'] = 1;
     items[0]['s'] = 'qa.debian.org';
     items[0]['u'] = 'http://qa.debian.org/madison.php?package=' + program + '&table=debian&a=&c=&s=#';
 
