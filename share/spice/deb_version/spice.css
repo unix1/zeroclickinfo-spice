@@ -7,11 +7,13 @@
 }
 
 #zero_click_abstract table td {
-    padding-right: 15px;
+    vertical-align: top;
+    padding: 0px 10px 10px 0px;
 }
 
 #zero_click_abstract table th {
     color: 666666;
     font-size: 12px;
     font-weight: 700;
+    padding-bottom: 5px;
 }
