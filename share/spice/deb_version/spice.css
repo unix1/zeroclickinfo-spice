@@ -1,13 +1,17 @@
-td, th {
-    border: solid 1px black;
+.tr_odd {
+    background-color: lightgrey;
 }
 
-#debianVersions {
-    text-align: center !important;
+#zero_click_abstract table {
+    margin: 4px 0px 0px 20px;
 }
 
+#zero_click_abstract table td {
+    padding-right: 15px;
+}
 
-caption, th, #debianVersions{
-    text-align: center !important;
-    padding: 0px 2px !important;
+#zero_click_abstract table th {
+    color: 666666;
+    font-size: 12px;
+    font-weight: 700;
 }
