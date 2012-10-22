@@ -9,8 +9,8 @@ function ddg_spice_google_plus(google) {
 
 		//Sometimes, the API returns a lot of results even if we
 		//asked for only five. (e.g. coke)
-		if(google['items'].length > 4) {
-			limit = 4;
+		if(google['items'].length > 5) {
+			limit = 5;
 		} else {
 			limit = google['items'].length;
 		}
