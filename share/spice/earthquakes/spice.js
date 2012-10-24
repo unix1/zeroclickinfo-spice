@@ -8,7 +8,7 @@ function ddg_spice_earthquakes(response) {
              + earthquake.depth + 'km depth, ' + earthquake.region
              + ' [<a href="http://maps.google.com/?ll=' + earthquake.lat
              + ',' + earthquake.lon + '">' + earthquake.lat + ', '
-             + earthquake.lon + '</a>],' + ' ' + earthquake.timedate;
+             + earthquake.lon + '</a>],' + ' ' + earthquake.timedate.replace(/-/g,'/');
 	}
 	out += '</ul>';
 
