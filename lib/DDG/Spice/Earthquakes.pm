@@ -13,7 +13,7 @@ spice from => '([^/]+)/([^/]+)';
 spice wrap_jsonp_callback => 1;
 
 handle query_lc => sub {
-    s/ ?(?:earthquakes?(?: in (\d{2,4}))?) ?//;
+    s/ ?(?:earthquakes?(?: in (\d{4}))?) ?//;
     if ($1) { return 'eqs', $1 }
     return 'eqs';
 };

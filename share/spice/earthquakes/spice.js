@@ -1,5 +1,8 @@
 function ddg_spice_earthquakes(response) {
-    console.log(response);
+    var query = DDG.get_query();
+    var year = query.search(/\d{4}/);
+    query = (year == -1 ? 'Recent Earthquakes'
+            : 'Earthquakes in ' + query.substr(year, 4));
     var earthquakes = response.earthquakes;
 	var out = '<ul>';
 	for(var i = 0;i < earthquakes.length;i++) {
@@ -15,7 +18,7 @@ function ddg_spice_earthquakes(response) {
 	var items = new Array();
 	items[0] = new Array();
     items[0]['a'] = out;
-	items[0]['h'] = "Most recent earthquakes";
+	items[0]['h'] = query;
 	items[0]['s'] = 'SEISMI';
 	items[0]['u'] = 'http://www.seismi.org/';
     items[0]["force_big_header"] = true;
