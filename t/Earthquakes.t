@@ -19,6 +19,12 @@ ddg_spice_test(
         caller => 'DDG::Spice::Earthquakes',
         is_cached => 1
     ),
+    'earthquakes in 2011' => test_spice(
+        '/js/spice/earthquakes/eqs/2011',
+        call_type => 'include',
+        caller => 'DDG::Spice::Earthquakes',
+        is_cached => 1
+    ),
 );
 
 done_testing;
