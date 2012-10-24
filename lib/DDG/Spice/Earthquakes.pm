@@ -7,7 +7,7 @@ attribution web => ['http://dylansserver.com','Dylan Lloyd'],
 
 triggers any => "earthquake", "earthquakes";
 
-spice to => 'http://www.seismi.org/api/$1/?limit=50';
+spice to => 'http://www.seismi.org/api/$1/$2?limit=50';
 spice from => '([^/]+)/([^/]+)';
 
 spice wrap_jsonp_callback => 1;
