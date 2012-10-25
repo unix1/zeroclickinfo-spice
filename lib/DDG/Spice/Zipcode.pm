@@ -12,6 +12,7 @@ spice from => '([A-Z0-9\-]+)(?:/([A-Z]+)?)?';
 spice to => '"http://where.yahooapis.com/v1/places${dollar}and(.q($1,$2),.type(11));count=0?appid={{ENV{DDG_SPICE_ZIPCODE_APIKEY}}}&format=json&callback={{callback}}"';
 
 handle query_lc => sub {
+    return if /elevation/;
 	s/\s*\b(zip\s*(code)?|post(al)?\s*(code)?)\b\s*//i;
 
 	my $code;
