@@ -5,7 +5,7 @@ function ddg_spice_elevation_gtopo30(r) {
     var answer = 'Elevation at ' + r.lat + '° latitude, '
                + r.lng + '° longitude is ' + r.gtopo30 + 'm.'
                + ' Measured by the <a href="https://en.wikipedia.org/wiki/GTOPO30">'
-               + 'GTOPO30</a>.';
+               + 'GTOPO30</a> digital elevation model.';
 	var items = new Array();
 	items[0] = new Array();
     items[0]['a'] = answer;

@@ -14,7 +14,7 @@ spice from => '([^/]+)/([^/]+)';
 spice wrap_jsonp_callback => 1;
 
 handle remainder => sub {
-    /(?: at)? ?(\d+(?:\.\d+))°?(?: ?latitude)? (\d+(?:\.\d+))°?(?: ?longitude)?/;
+    /(?: at)? ?(\d+(?:\.\d+))°?(?: ?latitude)?,? (\d+(?:\.\d+))°?(?: ?longitude)?/;
     return unless $1 and $2;
     return $1, $2;
 };
