@@ -8,7 +8,7 @@ attribution web => ['http://dylansserver.com','Dylan Lloyd'],
 triggers any => "earthquake", "earthquakes";
 
 spice to => 'http://www.seismi.org/api/$1/$2?limit=50';
-spice from => '([^/]+)/([^/]+)';
+spice from => '([^/]+)(?:/([^/]+))?';
 
 spice proxy_cache_valid => "200 1hr";
 
