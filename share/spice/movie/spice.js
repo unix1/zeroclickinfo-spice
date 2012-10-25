@@ -43,7 +43,13 @@ function ddg_spice_movie(movie) {
 
        // Display the thing
        Coral.display({
-           type: "standard",
+           about: {
+               name: "Rotten Tomatoes Plugin",
+               author: "Zaahir Moolla",
+               version: "0.1",
+               website: "http://www.zaahir.ca"    
+           },
+           theme: "standard",
            blurb: {
                text: header + " is an X movie" + cast + ". " + blurb,
                limit: "auto"
