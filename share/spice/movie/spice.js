@@ -42,32 +42,29 @@ function ddg_spice_movie(movie) {
        header = result.title;
 
        // Display the thing
-       Coral.display({
+       Coral.display().standard({
            about: {
                name: "Rotten Tomatoes Plugin",
                author: "Zaahir Moolla",
                version: "0.1",
                website: "http://www.zaahir.ca"    
            },
-           theme: "standard",
            blurb: {
                text: header + " is an X movie" + cast + ". " + blurb,
-               limit: "auto"
+               limit: "150" // Optional
            },
            title: {
                text: header,
-               limit: "auto",
-               big: true
+               limit: "50", // Optional 
+               big: true // Optional
            },
            image: {
-               url: poster,
-               height: "auto",
-               width: "auto"
+               url: poster
            },
            source: {
                text: 'Rotten Tomatoes',
                url: result.links.alternate
-           }
+           },
        });
     } 
 }
