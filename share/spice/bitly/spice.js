@@ -8,7 +8,7 @@ function ddg_spice_bitly (r) {
 			h: 'Shortened URL (Bitly)',
 			i: 'http://i.imgur.com/xVpFr.png',
 			s: 'Bitly',
-			u: 'http://bitly.com',
+			u: url + "+",
 			force_big_header: true
 		};
 		nra(items, 1, 2);
