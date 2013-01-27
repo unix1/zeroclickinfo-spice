@@ -30,8 +30,8 @@ function ddg_spice_library_of_congress(response) {
         results += "<ul>";
         for (var i in docs) {
             if (docs.hasOwnProperty(i)) {
-                var doc = docs[i].getElementsByTagName("zs:recordData");
-                var type = docs[i].getElementsByTagName("type")[0].textContent;
+                var doc = docs[i].getElementsByTagName("mods");
+                var type = docs[i].getElementsByTagName("form")[0].textContent;
                 var title = docs[i].getElementsByTagName("title")[0].textContent;
                 results += "<li>"
                          + "[" + type + "] " + title
