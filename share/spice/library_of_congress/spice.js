@@ -31,10 +31,14 @@ function ddg_spice_library_of_congress(response) {
         for (var i in docs) {
             if (docs.hasOwnProperty(i)) {
                 var doc = docs[i].getElementsByTagName("mods");
-                var type = docs[i].getElementsByTagName("form")[0].textContent;
+                var type = docs[i].getElementsByTagName("typeOfResource")[0].textContent;
+                type = type.replace(/-.*/, "");
                 var title = docs[i].getElementsByTagName("title")[0].textContent;
+                var resource = "http://lccn.loc.gov/"
+                             + docs[i].getElementsByTagName("identifier")[0].textContent;
                 results += "<li>"
-                         + "[" + type + "] " + title
+                         + "[" + type + "] "
+                         + "<a href=\"" + resource + "\">" + title + "</a>"
                          + "</li>";
                 console.log(doc);
             }
