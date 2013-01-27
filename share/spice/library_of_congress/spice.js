@@ -16,7 +16,16 @@ function ddg_spice_library_of_congress(response) {
         };
     } else { return; }
 
-    console.log(parseXML(response).documentElement);
+    var xml = parseXML(response).documentElement;
+    var docs = xml.childNodes[2].children;
+
+    for (var i in docs) {
+        if (docs.hasOwnProperty(i)) {
+            var data = docs[i].children[2].children[0];
+            console.log(data);
+        }
+    }
+
 
 	var items = new Array();
 	items[0] = new Array();
