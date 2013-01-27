@@ -15,7 +15,7 @@ code_url "https://github.com/duckduckgo/zeroclickinfo-spice/blob/master/lib/DDG/
 
 triggers start => "library";
 
-spice to => 'http://z3950.loc.gov:7090/voyager?version=1.1&operation=searchRetrievequery=$1&maximumRecords=1&recordSchema=dc';
+spice to => 'http://z3950.loc.gov:7090/voyager?version=1.1&operation=searchRetrieve&query=$1&maximumRecords=1&recordSchema=dc&maximumRecords=20';
 
 spice wrap_string_callback => 1;
 
