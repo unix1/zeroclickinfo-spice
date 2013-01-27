@@ -19,20 +19,35 @@ function ddg_spice_library_of_congress(response) {
         };
     } else { return; }
 
-    var xml = parseXML(response).documentElement;
-    var docs = xml.childNodes[2].children;
+    xml = parseXML(response).documentElement;
+    docs = xml.getElementsByTagName("zs:record");
+    console.log(xml);
+    console.log(docs);
 
-    for (var i in docs) {
-        if (docs.hasOwnProperty(i)) {
-            var data = docs[i].children[2].children[0];
-            console.log(data);
+    var results = '';
+
+    if (docs.length > 1) {
+        results += "<ul>";
+        for (var i in docs) {
+            if (docs.hasOwnProperty(i)) {
+                var doc = docs[i].getElementsByTagName("zs:recordData");
+                var type = docs[i].getElementsByTagName("type")[0].textContent;
+                var title = docs[i].getElementsByTagName("title")[0].textContent;
+                results += "<li>"
+                         + "[" + type + "] " + title
+                         + "</li>";
+                console.log(doc);
+            }
         }
+        results += "</ul>";
+    } else if (docs.length == 1) {
+        // TODO
     }
 
 
 	var items = new Array();
 	items[0] = new Array();
-    items[0]['a'] = 'test';
+    items[0]['a'] = results;
 	items[0]['h'] = query + " (Library of Congress)";
 	items[0]['s'] = 'the Library of Congress';
 	items[0]['u'] = 'http://loc.gov';
