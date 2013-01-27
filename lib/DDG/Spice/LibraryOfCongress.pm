@@ -1,0 +1,27 @@
+package DDG::Spice::LibraryOfCongress;
+
+use DDG::Spice;
+
+name "LibraryOfCongress";
+description "Look up documents in the Library of Congress";
+source "Library of Congress";
+primary_example_queries "";
+secondary_example_queries "";
+category "reference";
+topics "special_interest";
+attribution web => ['http://dylansserver.com','Dylan Lloyd'],
+            email => ['dylan@dylansserver.com','Dylan Lloyd'];
+code_url "https://github.com/duckduckgo/zeroclickinfo-spice/blob/master/lib/DDG/Spice/LibraryOfCongress.pm";
+
+triggers start => "library";
+
+spice to => 'http://z3950.loc.gov:7090/voyager?version=1.1&operation=searchRetrievequery=$1&maximumRecords=1&recordSchema=dc';
+
+spice wrap_string_callback => 1;
+
+handle remainder => sub {
+    s/ *of congress *//i;
+    return $_;
+};
+
+1;
