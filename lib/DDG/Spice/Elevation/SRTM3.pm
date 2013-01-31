@@ -6,7 +6,8 @@ use utf8;
 attribution web => ['http://dylansserver.com','Dylan Lloyd'],
             email => ['dylan@dylansserver.com','Dylan Lloyd'];
 
-triggers startend => "elevation";
+# this endpoint will only be triggered via nrj in Elevation::AsterGDEM
+triggers startend => '';
 
 spice to => 'http://api.geonames.org/srtm3JSON?lat=$1&lng=$2&username=duckduckgo';
 spice from => '([^/]+)/([^/]+)';

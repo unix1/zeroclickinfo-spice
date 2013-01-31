@@ -6,7 +6,7 @@ use utf8;
 attribution web => ['http://dylansserver.com','Dylan Lloyd'],
             email => ['dylan@dylansserver.com','Dylan Lloyd'];
 
-triggers startend => "elevation";
+triggers startend => 'elevation';
 
 spice to => 'http://api.geonames.org/astergdemJSON?lat=$1&lng=$2&username=duckduckgo';
 spice from => '([^/]+)/([^/]+)';
