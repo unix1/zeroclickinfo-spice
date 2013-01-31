@@ -4,16 +4,20 @@ function ddg_spice_earthquakes(response) {
     query = (year == -1 ? 'Recent Earthquakes'
             : 'Earthquakes in ' + query.substr(year, 4));
     var earthquakes = response.earthquakes;
-	var out = '<ul>';
+	var out = '';
 	for(var i = 0;i < earthquakes.length;i++) {
         var earthquake = earthquakes[i];
-		out += '<li>' + earthquake.magnitude + ' magnitude at '
-             + earthquake.depth + 'km depth, ' + earthquake.region
-             + ' [<a href="http://maps.google.com/?ll=' + earthquake.lat
-             + ',' + earthquake.lon + '">' + earthquake.lat + ', '
-             + earthquake.lon + '</a>],' + ' ' + earthquake.timedate.replace(/-/g,'/');
+		out += '<fieldset>'
+             + '<legend>'
+             + '<a href="http://maps.google.com/?ll='
+             + earthquake.lat + ',' + earthquake.lon + '">'
+             + earthquake.region + '</a>'
+             + ' at ' + earthquake.timedate.replace(/-/g,'/')
+             + '</legend>'
+             + + earthquake.magnitude + ' magnitude at '
+             + earthquake.depth + 'km depth '
+             + '</fieldset>';
 	}
-	out += '</ul>';
 
 	var items = new Array();
 	items[0] = new Array();
