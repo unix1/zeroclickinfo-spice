@@ -7,11 +7,13 @@ function ddg_spice_earthquakes(response) {
 	var out = '';
 	for(var i = 0;i < earthquakes.length;i++) {
         var earthquake = earthquakes[i];
+        var region = earthquake.region.charAt(0).toUpperCase()
+                   + earthquake.region.slice(1);
 		out += '<fieldset>'
              + '<legend>'
              + '<a href="http://maps.google.com/?ll='
              + earthquake.lat + ',' + earthquake.lon + '">'
-             + earthquake.region + '</a>'
+             + region + '</a>'
              + ' at ' + earthquake.timedate.replace(/-/g,'/')
              + '</legend>'
              + + earthquake.magnitude + ' magnitude at '
