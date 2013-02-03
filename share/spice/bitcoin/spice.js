@@ -25,7 +25,7 @@ function ddg_spice_bitcoin(response) {
     items[0]['a'] = answer;
 	items[0]['h'] = query + " (Bitcoin Address)";
 	items[0]['s'] = 'BitCoin.info';
-	items[0]['u'] = 'http://bitcoin.info/address/' + query;
+	items[0]['u'] = 'http://blockchain.info/address/' + query;
     items[0]["force_big_header"] = true;
 	
 	nra(items);
