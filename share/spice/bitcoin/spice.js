@@ -1,12 +1,18 @@
 function ddg_spice_bitcoin(response) {
     console.log(response);
+    res = response;
+
     var query = decodeURIComponent(rq);
     query = query.replace(/(btc|bitcoins?)( address( of)?)?/gi, "")
 
-    var balance = '' + response.final_balance/1000;
-    balance = balance.replace(/(\d{3})/g, '$1,').replace(/,?\.\d*|,$/g, '');
+    function format_bitcoin_from_satoshi(balance) {
+        var balance = '' + balance/1000;
+        balance = balance.replace(/(\d{3})/g, '$1,').replace(/,?\.\d*|,$/g, '');
+        return balance + '฿';
+    }
 
-    res = response;
+    var balance = format_bitcoin_from_satoshi(response.final_balance);
+    var total_received = format_bitcoin_from_satoshi(response.total_received);
 
     var address_tag = '';
     response.txs.map(
@@ -17,8 +23,9 @@ function ddg_spice_bitcoin(response) {
     );
 
     var answer = (address_tag != '' ? '<h1>' + address_tag + '</h1><br>' : '')
-               + 'Total balance: ' + balance + '฿<br>'
-               + 'Total transactions: ' + response.n_tx + '<br>';
+               + 'Total transactions: ' + response.n_tx + '<br>'
+               + 'Total recieved: ' + total_received + '<br>'
+               + 'Total balance: ' + balance + '<br>';
 
 	var items = new Array();
 	items[0] = new Array();
