@@ -22,10 +22,16 @@ function ddg_spice_bitcoin(response) {
         }
     );
 
-    var answer = (address_tag != '' ? '<h1>' + address_tag + '</h1><br>' : '')
-               + 'Total transactions: ' + response.n_tx + '<br>'
-               + 'Total recieved: ' + total_received + '<br>'
-               + 'Total balance: ' + balance + '<br>';
+    var answer = '<table>'
+               + (address_tag != '' ?
+                       '<tr><th colspan="2">' + address_tag + '</th></tr>' : '')
+               + '<tr><td>No. Transactions:</td>'
+               + '<td>' + response.n_tx + '</td></tr>'
+               + '<tr><td>Total Recieved:</td>'
+               + '<td class="bitcoin-balance">' + total_received + '</td></tr>'
+               + '<tr><td>Final Balance:</td>'
+               + '<td class="bitcoin-balance">' + balance + '</td></tr>'
+               + '</table>';
 
 	var items = new Array();
 	items[0] = new Array();
