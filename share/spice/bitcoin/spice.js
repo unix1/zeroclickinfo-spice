@@ -6,9 +6,9 @@ function ddg_spice_bitcoin(response) {
     query = query.replace(/(btc|bitcoins?)( address( of)?)?/gi, "")
 
     function format_bitcoin_from_satoshi(balance) {
-        var balance = '' + balance/1000;
+        var balance = '' + balance/100000000;
         balance = balance.replace(/(\d{3})/g, '$1,').replace(/,?\.\d*|,$/g, '');
-        return balance + '฿';
+        return balance + ' ฿';
     }
 
     var balance = format_bitcoin_from_satoshi(response.final_balance);
