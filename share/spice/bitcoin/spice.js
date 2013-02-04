@@ -3,11 +3,13 @@ function ddg_spice_bitcoin(response) {
     res = response;
 
     var query = decodeURIComponent(rq);
-    query = query.replace(/(btc|bitcoins?)( address( of)?)?/gi, "")
+    query = query.replace(/(btc|bitcoins?)( address( of)?)?/gi, '')
 
     function format_bitcoin_from_satoshi(balance) {
-        var balance = '' + balance/100000000;
-        balance = balance.replace(/(\d{3})/g, '$1,').replace(/,?\.\d*|,$/g, '');
+        var balance = balance/100000000;
+        var parts = balance.toString().split('.');
+        balance = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                + (parts[1] ? '.' + parts[1] : '');
         return balance + ' ฿';
     }
 
