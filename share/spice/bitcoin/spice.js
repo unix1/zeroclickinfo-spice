@@ -15,6 +15,7 @@ function ddg_spice_bitcoin(response) {
 
     var balance = format_bitcoin_from_satoshi(response.final_balance);
     var total_received = format_bitcoin_from_satoshi(response.total_received);
+    var total_sent = format_bitcoin_from_satoshi(response.total_sent);
 
     var address_tag = '';
     response.txs.map(
@@ -31,6 +32,8 @@ function ddg_spice_bitcoin(response) {
                + '<td>' + response.n_tx + '</td></tr>'
                + '<tr><td>Total Recieved:</td>'
                + '<td class="bitcoin-balance">' + total_received + '</td></tr>'
+               + '<tr><td>Total Sent:</td>'
+               + '<td class="bitcoin-balance">' + total_sent + '</td></tr>'
                + '<tr><td>Final Balance:</td>'
                + '<td class="bitcoin-balance">' + balance + '</td></tr>'
                + '</table>';
