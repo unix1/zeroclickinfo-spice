@@ -1,7 +1,4 @@
 function ddg_spice_bitcoin(response) {
-    console.log(response);
-    res = response;
-
     var query = decodeURIComponent(rq);
     query = query.replace(/(btc|bitcoins?)( address( of)?)?/gi, '')
 
