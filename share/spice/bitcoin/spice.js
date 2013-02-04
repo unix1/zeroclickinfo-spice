@@ -1,6 +1,6 @@
 function ddg_spice_bitcoin(response) {
     var query = decodeURIComponent(rq);
-    query = query.replace(/(btc|bitcoins?)( address( of)?)?/gi, '')
+    query = query.replace(/ ?(btc|bitcoins?)( address( of)?)? ?/gi, '')
 
     function format_bitcoin_from_satoshi(balance) {
         var balance = balance/100000000;
