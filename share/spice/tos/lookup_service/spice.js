@@ -1,7 +1,4 @@
-function ddg_spice_tos(response) {
-
-    console.log(response);
-    test = response;
+function ddg_spice_tos_lookup_service(response) {
 
     var points = [];
     points['instagram'] = ['wy9QcF5zQII'];
@@ -74,6 +71,9 @@ function ddg_spice_tos(response) {
     answer = answer.replace(/, $/, '') + '<br>';
 
     if (points[response.id]) {
+        for (var i in points[response.id]) {
+            nrj('/js/spice/tos/lookup_point/' + points[response.id][i]);
+        }
     }
 
 	var items = [];
@@ -85,4 +85,8 @@ function ddg_spice_tos(response) {
     items[0]["force_big_header"] = true;
 	
 	nra(items);
+}
+
+function ddg_spice_tos_lookup_point(response) {
+    console.log(response);
 }

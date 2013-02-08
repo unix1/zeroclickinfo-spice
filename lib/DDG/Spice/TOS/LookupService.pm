@@ -1,4 +1,4 @@
-package DDG::Spice::TOS;
+package DDG::Spice::TOS::LookupService;
 
 use DDG::Spice;
 
