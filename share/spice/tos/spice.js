@@ -66,6 +66,7 @@ function ddg_spice_tos(response) {
     var answer = '';
 
     for (var docname in response.tosback2) {
+        if (docname === "sitename") continue;
         answer += '<a href="' + response.tosback2[docname].url + '">'
                 + response.tosback2[docname].name + '</a>, ';
     }
