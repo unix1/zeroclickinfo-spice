@@ -71,7 +71,7 @@ function ddg_spice_tos_lookup_service(response) {
     points['comcast'] = ['eff-back-tell-user-no', 'eff-back-transparency-data-no'];
     points['flattr'] = ['_ZNQ9J07ntI'];
 
-    var answer = '';
+    var answer = 'Documents: ';
 
     for (var docname in response.tosback2) {
         if (docname === "sitename") continue;
