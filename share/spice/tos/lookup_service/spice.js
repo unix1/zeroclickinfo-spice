@@ -7,7 +7,7 @@ items[0]['u'] = 'http://tos-dr.info';
 items[0]["force_big_header"] = true;
 
 var nrj_calls = 0;
-var points = '<ul>';
+var points = [];
 
 function ddg_spice_tos_lookup_service(response) {
 
@@ -93,16 +93,24 @@ function ddg_spice_tos_lookup_service(response) {
 
 function ddg_spice_tos_lookup_point(point) {
     console.log(point);
-    points += '<li>'
-            + ( point.tosdr.point == 'good' ?
-                    '<span style="color:green">' + point.name + '</span>' :
-                    ( point.tosdr.point == 'alert' || point.tosdr.point == 'mediocre' ?
-                        '<span style="color:red">' + point.name + '</span>' :
-                        point.name ))
-            + '</li>';
+    points.push(point);
 	if (--nrj_calls === 0) {
-        points += '</ul>';
-        items[0]['a'] += points;
+        items[0]['a'] += '<ul>';
+        points.sort(function(a,b) {
+            if (a.tosdr.point == 'alert' || a.tosdr.point == 'mediocre') return -1;
+            if (a.tosdr.point == 'good') return 1;
+            if (b.tosdr.point == 'alert' || b.tosdr.point == 'mediocre') return 1;
+            return 0;
+        }).map(function(point) {
+            items[0]['a'] += '<li>'
+                          + ( point.tosdr.point == 'good' ?
+                                  '<span style="color:green">' + point.name + '</span>' :
+                                  ( point.tosdr.point == 'alert' || point.tosdr.point == 'mediocre' ?
+                                      '<span style="color:red">' + point.name + '</span>' :
+                                      point.name ))
+                          + '</li>';
+        });
+        items[0]['a'] += '</ul>';
         nra(items);
     }
 }
