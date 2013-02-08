@@ -15,7 +15,7 @@ code_url "https://github.com/duckduckgo/zeroclickinfo-spice/blob/master/lib/DDG/
 icon_url "/i/tos-dr.info.ico";
 status "enabled";
 
-triggers any => "term", "terms", "service", "tos", "tosdr";
+triggers any => "terms of service", "tos", "tosdr";
 
 spice to => 'http://tos-dr.info/services/$1.json';
 
