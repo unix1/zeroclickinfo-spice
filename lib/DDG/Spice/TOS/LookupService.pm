@@ -11,7 +11,7 @@ category "reference";
 topics "special_interest";
 attribution web => ['http://dylansserver.com','Dylan Lloyd'],
             email => ['dylan@dylansserver.com','Dylan Lloyd'];
-code_url "https://github.com/duckduckgo/zeroclickinfo-spice/blob/master/lib/DDG/Spice/TOS.pm";
+code_url "https://github.com/duckduckgo/zeroclickinfo-spice/blob/master/lib/DDG/Spice/TOS/LookupService.pm";
 icon_url "/i/tos-dr.info.ico";
 status "enabled";
 
