@@ -21,8 +21,8 @@ spice to => 'http://tos-dr.info/services/$1.json';
 
 spice wrap_jsonp_callback => 1;
 
-handle query_lc => sub {
-    s/ ?(tos(dr)?|terms? of service) ?//gi;
+handle remainder => sub {
+    s/\./-/g;
     return $_ if $_ ne '';
     return;
 };
