@@ -1,4 +1,4 @@
-package DDG::Spice::Bitcoin;
+package DDG::Spice::Bitcoin::Address;
 
 use DDG::Spice;
 

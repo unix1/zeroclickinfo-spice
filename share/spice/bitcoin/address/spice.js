@@ -1,4 +1,4 @@
-function ddg_spice_bitcoin(response) {
+function ddg_spice_bitcoin_address(response) {
     var query = decodeURIComponent(rq);
     query = query.replace(/ ?(btc|bitcoins?)( address( of)?)? ?/gi, '')
 
