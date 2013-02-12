@@ -21,5 +21,21 @@ ddg_spice_test(
     ),
 );
 
+ddg_spice_test(
+    [qw( DDG::Spice::Bitcoin::Rates )],
+    '10 usd to btc' => test_spice(
+        '/js/spice/bitcoin/rates/10-usd-to-btc',
+        call_type => 'include',
+        caller => 'DDG::Spice::Bitcoin::Rates',
+        is_cached => 1
+    ),
+    '1 btc to sek' => test_spice(
+        '/js/spice/bitcoin/rates/1-btc-to-sek',
+        call_type => 'include',
+        caller => 'DDG::Spice::Bitcoin::Rates',
+        is_cached => 1
+    ),
+);
+
 done_testing;
 
