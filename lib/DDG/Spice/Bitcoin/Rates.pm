@@ -24,8 +24,8 @@ category "calculations";
 attribution github => ['https://github.com/3pence','3pence'];
 
 handle query_lc => sub {
-    my($q) = @_;
-    $q =~ s/[' ']/-/g;
-    return $q;
+    s/[' ']/-/g;
+    return $_ unless $_ eq '';
+    return;
 };
 1;
