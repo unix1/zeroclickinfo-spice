@@ -1,4 +1,4 @@
-package DDG::Spice::Bitcoin;
+package DDG::Spice::Bitcoin::Rates;
 
 use DDG::Spice;
 

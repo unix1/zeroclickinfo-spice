@@ -1,4 +1,4 @@
-function ddg_spice_bitcoin(data) {
+function ddg_spice_bitcoin_rates(data) {
   var img,snippet,link,div;
 
   // validity check
