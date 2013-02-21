@@ -29,6 +29,14 @@
         }
     };
 
+    // Add the functions to ddg_spice_movie for testing.
+    root.ddg_spice_movie.getSynopsis = getSynopsis;
+    root.ddg_spice_movie.getNames = getNames;
+    root.ddg_spice_movie.getPoster = getPoster;
+    root.ddg_spice_movie.getHeader = getHeader;
+    root.ddg_spice_movie.getDates = getDates;
+    root.ddg_spice_movie.getRating = getRating;
+
     // Check for the most relevant movie. If we
     // only have one movie or if we didn't find a
     // more relevant movie, we get the first one.
