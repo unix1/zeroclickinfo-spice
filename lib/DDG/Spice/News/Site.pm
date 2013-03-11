@@ -2,12 +2,6 @@ package DDG::Spice::News::Site;
 
 use DDG::Spice;
 
-use constant {
-    COM => '.com',
-    SOURCE => 'site',
-    OUTPUT => 'json',
-};
-
 # 20130311 (caine): switch to hash where we normalize
 # international sources.  E.G. wired.co.uk -> wired.com
 my @sites = ('lifehacker',
@@ -32,13 +26,13 @@ my @sites = ('lifehacker',
 );
 
 SITE: foreach my $site ( @sites ) {
-    push(@sites, $site.COM);
+    push(@sites, qq($site.com));
 }
 
 triggers any => @sites;
 
 
-spice to => 'https://caine.duckduckgo.com/news.js?s='.SOURCE.'&o='.OUTPUT.'&q=$1';
+spice to => 'https://caine.duckduckgo.com/news.js?s=site&o=json&q=$1';
 spice wrap_jsonp_callback => 1;
 
 
@@ -54,11 +48,11 @@ attribution github => ['https://github.com/duckduckgo', 'DuckDuckGo'];
 
 
 handle query_lc => sub {
-    my $ret = $_;
+    my ( $ret ) = @_;
 
     # Do that lookup from above here...
     if ($ret !~ /.com/) {
-	$ret .= COM;
+	$ret .= '.com';
     }
 
     return $ret;
