@@ -23,12 +23,12 @@ my @sites = ('lifehacker',
 	     'foxnews',
 	     'abcnews',
 	     'msnbc',
-	     'washingtonpost'
+	     'washingtonpost',
 	     'cbs',
 	     'telegraph',
 	     'nypost',
 	     'nydailynews',
-	     'wired'
+	     'wired',
 );
 
 SITE: foreach my $site ( @sites ) {
