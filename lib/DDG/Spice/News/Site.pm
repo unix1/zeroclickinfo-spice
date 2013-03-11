@@ -55,6 +55,9 @@ handle query_lc => sub {
 	$ret .= '.com';
     }
 
+    # site:wired.com
+    $ret = qq(site%3a$ret);
+
     return $ret;
 };
 
