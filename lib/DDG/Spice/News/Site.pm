@@ -43,8 +43,8 @@ description 'Add news to navigational and news site queries.';
 name 'News sites';
 source 'DuckDuckGo';
 code_url 'https://github.com/duckduckgo/zeroclickinfo-spice/blob/master/lib/DDG/Spice/News/Site.pm';
-topics 'news';
-category 'news';
+topics 'everyday';
+category 'time_sensitive';
 attribution github => ['https://github.com/duckduckgo', 'DuckDuckGo'];
 
 
