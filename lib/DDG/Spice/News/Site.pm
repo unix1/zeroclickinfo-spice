@@ -25,12 +25,7 @@ my @sites = ('lifehacker',
 	     'wired',
 );
 
-my @triggers = @sites;
-SITE: foreach my $site ( @sites ) {
-    push(@triggers, qq($site.com));
-}
-
-triggers any => @triggers;
+triggers any => map { $_, $_.'.com' } @sites;
 
 
 spice to => 'https://caine.duckduckgo.com/news.js?s=site&o=json&q=$1';
