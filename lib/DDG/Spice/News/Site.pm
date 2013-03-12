@@ -28,7 +28,7 @@ my @sites = ('lifehacker',
 triggers any => map { $_, $_.'.com' } @sites;
 
 
-spice to => 'https://caine.duckduckgo.com/news.js?s=site&o=json&q=$1';
+spice to => 'https://caine.duckduckgo.com/news.js?s=site&o=json&q=site%3A$1';
 spice wrap_jsonp_callback => 1;
 
 
@@ -50,9 +50,6 @@ handle query_lc => sub {
     if ($ret !~ /.com/) {
 	$ret .= '.com';
     }
-
-    # site:wired.com
-    $ret = qq(site%3a$ret);
 
     return $ret;
 };
