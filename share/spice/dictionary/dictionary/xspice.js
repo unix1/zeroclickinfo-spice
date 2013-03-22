@@ -1,4 +1,29 @@
+var DDG = window.DDG || {};
+
+DDG.loadJavascript = function(src, callback) {
+    var element = document.createElement("script");
+    element.async = true;
+    element.src = src;
+    DDG.attachLoadEvent(element, callback);
+    document.body.appendChild(element);
+    return element;
+};
+
+DDG.attachLoadEvent = function(element, callback) {
+    if(element.addEventListener) {
+        element.addEventListener("load", callback, false);
+    } else {
+        element.onreadystatechange = function() {
+            if(this.readyState === "complete") {
+                callback();
+            }
+        };
+    }
+};
+
 var ddg_spice_dictionary_dictionary = function(api_result) {
+    "use strict";
+
     var context = {};
     var part_of_speech = {
         "interjection": "interj.",
@@ -27,57 +52,35 @@ var ddg_spice_dictionary_dictionary = function(api_result) {
             });
         }
 
-        // Copy the context.
-        ddg_spice_dictionary_dictionary.context = context;
-        ddg_spice_dictionary_dictionary.render = function(context) {
-            Spice.render({
-                 data              : context,
-                 force_big_header  : true,
-                 header1           : context.word + " (Definition)",
-                 source_name       : "Wordnik",
-                 source_url        : "http://www.wordnik.com/words/" + context.word,
-                 template_normal   : 'dictionary',
-                 template_small    : 'dictionary'
-            });
+        // Copy the things that we need to render the
+        ddg_spice_dictionary_dictionary.options = {
+            context: context
         };
     }
 
-    var loadJavascript = function(src, callback) {
-        var element = document.createElement("script");
-        element.async = true;
-        element.src = src;
-        attachLoadEvent(element, callback);
-        document.body.appendChild(element);
-        return element;
-    };
-
-    var attachLoadEvent = function(element, callback) {
-        if(element.addEventListener) {
-            element.addEventListener("load", callback, false);
-        } else {
-            element.onreadystatechange = function() {
-                if(this.readyState === "complete") {
-                    callback();
-                }
-            }
-        }
-    };
-
     loadJavascript("/js/spice/dictionary/dictionary_pronunciation/" + context.word, function() {
         console.log("Loaded Dictionary::Dictionary::Pronunciation.");
-    })
-}
+    });
+};
 
-function ddg_spice_dictionary_dictionary_pronunciation(pronounce) {
+var ddg_spice_dictionary_dictionary_pronunciation = function(pronounce) {
     "use strict";
-    var context = ddg_spice_dictionary_dictionary.context;
-    if(pronounce.length > 0 && pronounce[0].raw && pronounce[0].rawType === "ahd-legacy") {
+
+    var context = ddg_spice_dictionary_dictionary.options.context;
+    if(pronounce && pronounce.length > 0 && pronounce[0].rawType === "ahd-legacy") {
         context.pronunciation = pronounce[0].raw;
     } else {
         context.pronunciation = "";
     }
 
-    // Display the plugin!
-    ddg_spice_dictionary_dictionary.render(context);
-}
-
+    // This is when we display the plugin.
+    Spice.render({
+         data              : context,
+         force_big_header  : true,
+         header1           : context.word + " (Definition)",
+         source_name       : "Wordnik",
+         source_url        : "http://www.wordnik.com/words/" + context.word,
+         template_normal   : "dictionary",
+         template_small    : "dictionary"
+    });
+};
