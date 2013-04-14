@@ -182,7 +182,10 @@ function ddg_spice_espn_events(response) {
 
 function ddg_spice_espn_news(response) {
     console.log(response);
-    headlines = response.headlines;
+    headlines = response.headlines.filter(function(article) {
+        if (article.headline && article.source && article.links.web.href)
+            return true;
+    });
 
     news = '<div id="espn_zci_news">'
          + '<img src="/iu/?u=' + headshot.href
