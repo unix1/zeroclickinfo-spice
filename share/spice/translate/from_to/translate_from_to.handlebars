@@ -1,0 +1,43 @@
+{{#getTranslations}}
+
+	{{#each singleWord}}
+		{{! Use hn_story partial}}
+		{{{include "hn_story"}}}
+	{{/each}}
+
+	{{#if additionalMeanings}}
+		{{#if singleWord}}
+			<hr class="horizontal_line">
+			<a href="javascript:;" data-target="#additionalMeanings" class="hn_showHide">Top Comments</a>
+			<div id="additionalMeanings" class="hide">
+		{{else}}
+			<div id="additionalMeanings">
+		{{/if}}
+				{{#each additionalMeanings}}
+				<div class="hn_comment">
+					{{{hn_comment text}}}
+					<span class="hn_oneline">
+						[by {{{user_link username}}}]
+						[{{{item_link "parent"}}}]
+						{{#if discussion}}
+							{{{item_link discussion.title}}}
+						{{else}}
+							{{{item_link title}}}
+						{{/if}}
+					</span>
+				</div>
+				{{/each}}
+			</div>
+	{{/if}}
+
+	{{#if phrases}}
+		<hr class="horizontal_line">
+		<a href="javascript:;" data-target="#phrases" class="hn_showHide">Other Stories</a>
+		<div id="phrases" class="hide">
+			{{#each phrases}}
+				{{! Use hn_story partial}}
+				{{{include "hn_story"}}}
+			{{/each}}
+		</div>
+	{{/if}}
+{{/getTranslations}}
