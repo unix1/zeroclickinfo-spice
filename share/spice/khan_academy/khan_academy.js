@@ -1,7 +1,7 @@
 function ddg_spice_khan_academy ( api_result ) {
 
 	// check for response
-	if ( $.isEmptyObject(api_result.feed.entry) ) return;
+	if ( !api_result.items ) return;
 
 	var query = DDG.get_query().replace(/khan(\sacademy)?|videos?/g, "").trim();
 
@@ -17,7 +17,7 @@ function ddg_spice_khan_academy ( api_result ) {
 		template_normal: "khan_academy",
 		carousel_css_id: "khan_academy",
 		carousel_template_detail: "khan_academy_detail",
-		carousel_items: api_result.feed.entry,
+		carousel_items: api_result.items,
 		template_options : {
 			li_width : 120
 		}
@@ -39,20 +39,3 @@ function ddg_spice_khan_academy ( api_result ) {
 		$detail.height(height);
 	};
 }
-
-/*******************************
-  Handlebars helpers
-  *******************************/
-
-// forms the url for a khan_academy product image
-Handlebars.registerHelper ('video_id', function() {
-	var video_id = this.id.$t.split(":").pop();
-	return video_id;
-});
-
-// forms the url for a khan_academy product image
-Handlebars.registerHelper ('image_url', function() {
-	var image_url = this.media$group.media$thumbnail[1].url;
-	var secure_image_url = image_url.replace("http", "https");
-	return secure_image_url;
-});

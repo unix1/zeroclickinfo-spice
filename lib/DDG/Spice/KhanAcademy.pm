@@ -13,14 +13,7 @@ category "reference";
 attribution github => ['https://github.com/arlolra','arlolra'];
 status "enabled";
 
-spice to => join '&',
-    'https://gdata.youtube.com/feeds/api/videos?',
-    'author=khanacademy',
-    'max-results=50',
-    'alt=json-in-script',
-    'callback={{callback}}',
-    'v=2',
-    'q=$1';
+spice to => 'https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UC4a-Gbdw7vOaccHmFo40b9g&fields=items&key={{ENV{DDG_SPICE_KHAN_ACADEMY_APIKEY}}}&maxResults=50&callback={{callback}}&q=$1';
 
 triggers any => "khan", "khan academy";
 
