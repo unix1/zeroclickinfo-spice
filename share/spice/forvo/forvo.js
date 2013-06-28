@@ -1,5 +1,9 @@
-var ddg_spice_forvo = function(api_result) {
+nrj("soundmanager2/script/soundmanager2-nodebug-jsmin.js", true);
+
+function ddg_spice_forvo (api_result) {
     "use strict";
+
+    if (api_result.attributes.total < 1) return;
 
     // api_result.items can be either an array or an object.
     // Forvo returns either an array-like object or an actual array.
@@ -20,46 +24,108 @@ var ddg_spice_forvo = function(api_result) {
         force_big_header : true
     });
 
-    $(".zero_click_snippet").attr("style", "margin-left: 0px !important; display: block;");
+    // This gets called when the sound is finished playing
+    // or when another player is playing. It basically just resets the look of the player.
+    var clearPlayer = function() {
+        var li = $("ul.playlist li");
+        li.removeClass();
+        li.addClass("sm2_stopped");
+        soundManager.stopAll();
+    };
+
+    // Loads and plays the audio file.
+    var isFailed = false;
+    var playSound = function(anchor) {
+        soundManager.stopAll();
+
+        if(isFailed) {
+            setTimeout(function() {
+                clearPlayer();
+            }, 1000);
+        } else {
+            var sound = soundManager.createSound({
+                id: anchor.attr("id"),
+                url: anchor.data("stream"),
+                onfinish: function() {
+                    clearPlayer();
+                }
+            });
+
+            sound.play();
+        }
+    };
 
     // Initialize SoundManager2.
     window.SM2_DEFER = true;
-    var soundSetup = function() {
+    var isLoaded = false;
+    var isLoading = false;
+    var soundSetup = function(anchor) {
         window.soundManager = new SoundManager();
         soundManager.url = "/soundmanager2/swf/";
         soundManager.flashVersion = 9;
         soundManager.useFlashBlock = false;
         soundManager.useHTML5Audio = false;
         soundManager.beginDelayedInit();
+        soundManager.ontimeout(function() {
+            isFailed = true;
+            isLoaded = true;
+            clearPlayer();
+        })
         soundManager.onready(function() {
-            // Prevent the user from clicking the link.
-            // This copies the attribute "data-stream" to "href."
-            $(".forvo-audio").each(function() {
-                var stream = $(this).attr("data-stream");
-                $(this).attr("href", stream);
-            });
-            var pagePlayer = new PagePlayer();
-            pagePlayer.init();
+            playSound(anchor);
+            isLoaded = true;
         });
     };
 
-    var ready = [false, false];
-    var checkReady = function(toggle) {
-        ready[toggle] = true;
-        if(ready[0] && ready[1]) {
-            soundSetup();
+    // This controls our player.
+    var last_id;
+    ddg_spice_forvo.player = function(element) {
+        var li = $(element);
+        var anchor = li.children();
+
+        // Get the sound
+        var current_id = anchor.attr("id");
+        var sound;
+
+        // Make sure only one player is playing at any one time.
+        if(!last_id) {
+            last_id = current_id;
+        } else if(last_id !== current_id) {
+            last_id = current_id;
+            clearPlayer();
+        }
+
+        // Check if it is already playing.
+        // If it is, pause it.
+        if(li.hasClass("sm2_playing") && isLoaded) {
+            li.removeClass();
+            li.addClass("sm2_paused");
+
+            sound = soundManager.getSoundById(current_id);
+            sound.pause();
+        // If it's not playing, it's probably paused.
+        // Let's play it.
+        } else if(li.hasClass("sm2_paused")){
+            li.removeClass();
+            li.addClass("sm2_playing");
+
+            sound = soundManager.getSoundById(current_id);
+            sound.resume();
+        // If it's neither paused nor playing, we should load the audio and play it.
+        } else {
+            // Load SoundManager2 if it hasn't already.
+            if(!isLoaded && !isLoading) {
+                isLoading = true;
+                soundSetup(anchor);
+            // If SoundManager already loaded, we should just play the sound.
+            } else if(isLoaded) {
+                playSound(anchor);
+            }
+
+            li.removeClass();
+            li.addClass("sm2_playing");
         }
     };
-
-    // Load page-player.js. This JS file converts a list of MP3s into a playlist.
-    $.getScript("/soundmanager2/script/page-player-forvo.js", function() {
-        checkReady(0);
-    });
-
-    // Load SoundManager2. This JS file handles our audio.
-    $.getScript("/soundmanager2/script/soundmanager2-nodebug-jsmin.js", function() {
-        checkReady(1);
-    });
 };
 
 // Make sure we display only five items.

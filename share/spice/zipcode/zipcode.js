@@ -1,4 +1,4 @@
-window.ddg_spice_zipcode = function(api_result) {
+function ddg_spice_zipcode (api_result) {
     "use strict";
 
     // Check errors.
@@ -6,91 +6,121 @@ window.ddg_spice_zipcode = function(api_result) {
         return;
     }
 
-    // Get the original query.
-    var query;
-    $("script").each(function() {
-        var matched, result;
-        matched = $(this).attr("src");
-        if(matched) {
-            result = matched.match(/\/js\/spice\/zipcode\/(.+?)\//);
-            if(result) {
-                query = result[1];
-            }
-        }
-    });
+    // Get the original query zipcode and country name
+    var query,
+        script  = $("[src*='js/spice/zipcode']")[0],
+        source  = $(script).attr("src"),
+        matches = source.match(/\/([^\/]+)\/(\w+)$/);
 
-    // Expose the query. We want a Handlebars helper to use it later.
-    window.ddg_spice_zipcode.query = query;
+    // expose the zipcode and country from the query
+    api_result.zip = matches[1];
+    api_result.country = matches[2];
+
+    // Get the right result based on the query
+    var place = zipcode_getCountry(api_result, matches);
+
+    api_result.relevantPlace = place;
+
+    // Make sure we have a relevant result
+    if (!place) return;
+
+    // Get location
+    var names = ["locality1", "admin2", "admin1"],
+        header = [];
+
+    for (var i = 0; i < names.length ; i++) {
+        var name = place[names[i]];
+        if (name.length && header.indexOf(name) === -1) header.push(name);
+    };
+
+    header.push(place.country);
+    var header_string = header.join(", ");
+
+    // Get latlong coords for "more at" link
+    var latitude = place.centroid.latitude;
+    var longitude = place.centroid.longitude;
 
     // Display the Spice plugin.
     Spice.render({
         data              : api_result,
-        header1           : api_result.places.place[0].admin2 + ", " + api_result.places.place[0].admin1,
+        header1           : header_string,
         force_big_header  : true,
         source_name       : "MapQuest",
-        source_url        : "http://mapq.st/map?q=" + query,
-        template_normal   : "zipcode"
+        source_url        : "http://mapq.st/map?q=" + encodeURIComponent(latitude + "," + longitude),
+        template_normal   : "zipcode",
+        force_no_fold     : true
     });
+};
 
-    var loadMap = function() {
-        // Point to the icons folder.
-        L.Icon.Default.imagePath = "/dist/images";
+// If a country was specified in the query
+// select the result which returned for the
+// given country or return null if no match
+function zipcode_getCountry (result, matches) {
 
-        // Initialize the map.
-        var map = L.map('map');
+    var zip     = result.zip,
+        country = result.country,
+        locs    = result.places.place;
 
-        // Tell Leaflet where to get the map tiles.
-        L.tileLayer('http://{s}.tile.cloudmade.com/2f62ad0b4ba046f2b907b67e2c866fa4/997/256/{z}/{x}/{y}.png', {
-            maxZoom: 18, detectRetina: true }).addTo(map);
+    for (var i = 0; i < locs.length; i++) {
 
-        // Let's make a rectangle, shall we?
-        // This rectangle is used to mark the area occupied by the area code.
-        $(".places").each(function(index) {
-            var southWest = $(this).data("southwest").split("|");
-            var northEast = $(this).data("northeast").split("|");
+        var current = locs[i];
+        var resName = current.name.replace(/s+/, "");
 
-            southWest = new L.LatLng(southWest[0], southWest[1]);
-            northEast = new L.LatLng(northEast[0], northEast[1]);
-
-            var bounds = new L.LatLngBounds(southWest, northEast);
-            L.rectangle(bounds).addTo(map);
-
-            // Zoom in to the first one.
-            if(index === 0) {
-                map.fitBounds(bounds);
-            }
-
-            // Zoom in to the location when the link is clicked.
-            $(this).click(function() {
-                (function(bounds) {
-                    map.fitBounds(bounds);
-                }(bounds));
-            });
-        });
+        // check if zipcodes match and either countries match OR no country specified
+        if (resName === zip && ( country === "ZZ" || current["country attrs"].code === country )){
+            return locs[i];
+        };
     };
-
-    // Load LeafletJS.
-    $.getScript("/dist/leaflet.js", loadMap);
+    return null;
 };
 
 // Filter the zipcodes.
 // Only get the ones which are actually equal to the query.
-Handlebars.registerHelper("checkZipcode", function(context) {
+Handlebars.registerHelper("checkZipcode", function(options) {
     "use strict";
 
-    var result = [];
-    var place = this.places.place;
-    var name = window.ddg_spice_zipcode.query;
+    var result  = [],
+        locs    = this.places.place,
+        name    = this.zip,
+        country = this.relevantPlace["country attrs"].code;
 
-    if(place.length === 1) {
-        return;
-    }
+    if(locs.length === 1) return;
 
-    for(var i = 1; i < place.length; i += 1) {
-        if(place[i].name === name) {
-            result.push(place[i]);
+    locs = locs.sort(function(a, b) {
+        return a.country > b.country ? 1 : -1;
+    });
+
+    for(var i = 1; i < locs.length; i += 1) {
+        if(locs[i].name === name &&
+            locs[i]["country attrs"].code !== country ) {
+            result.push(locs[i]);
         }
     }
 
-    return context.fn(result);
+    if(result.length === 0) {
+        return;
+    }
+
+    result = options.fn(result);
+
+    if(result.replace(/\s+/, "") !== "") {
+        return "Postal code " + name + " in other countries: " + result;
+    }
+});
+
+Handlebars.registerHelper("bigbox", function(northEast, southWest) {
+    var boxpad = (northEast.latitude - southWest.latitude) * 0.25;
+
+    return [[northEast.latitude + boxpad, southWest.longitude],
+            [southWest.latitude - boxpad, northEast.longitude]].join();
+});
+
+Handlebars.registerHelper("coordString", function(northEast, southWest) {
+    var box = [[southWest.latitude, southWest.longitude].join(),
+               [northEast.latitude, southWest.longitude].join(),
+               [northEast.latitude, northEast.longitude].join(),
+               [southWest.latitude, northEast.longitude].join(),
+               [southWest.latitude, southWest.longitude].join()];
+
+    return box.join(",");
 });

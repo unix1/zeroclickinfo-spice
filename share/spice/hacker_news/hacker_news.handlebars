@@ -8,23 +8,27 @@
 	{{#if topComments}}
 		{{#if topStories}}
 			<hr class="horizontal_line">
-			<a href="javascript:;" data-target="#topComments" class="hn_showHide">Top Comments</a>
+			<a data-target="#topComments" class="hn_showHide">Top Comments</a>
 			<div id="topComments" class="hide">
 		{{else}}
 			<div id="topComments">
 		{{/if}}
 				{{#each topComments}}
 				<div class="hn_comment">
-					{{{hn_comment text}}}
-					<span class="hn_oneline">
-						[by {{{user_link username}}}]
-						[{{{item_link "parent"}}}]
-						{{#if discussion}}
-							{{{item_link discussion.title}}}
-						{{else}}
-							{{{item_link title}}}
-						{{/if}}
-					</span>
+					{{#strip_html text}}
+						{{condense this maxlen="120"}}
+					{{/strip_html}}
+					<small class="hn_oneline">
+						[by <a href='https://news.ycombinator.com/user?id={{{username}}}'>{{{username}}}</a>]
+						[<a href='https://news.ycombinator.com/item?id={{{discussion.id}}}'>parent</a>]
+						<a href='https://news.ycombinator.com/item?id={{{id}}}'>
+							{{#if discussion}}
+								{{{condense discussion.title maxlen="30"}}
+							{{else}}
+								{{{condense title maxlen="30"}}
+							{{/if}}
+						</a>
+					</small>
 				</div>
 				{{/each}}
 			</div>
@@ -32,7 +36,7 @@
 
 	{{#if otherStories}}
 		<hr class="horizontal_line">
-		<a href="javascript:;" data-target="#otherStories" class="hn_showHide">Other Stories</a>
+		<a data-target="#otherStories" class="hn_showHide">Other Stories</a>
 		<div id="otherStories" class="hide">
 			{{#each otherStories}}
 				{{! Use hn_story partial}}

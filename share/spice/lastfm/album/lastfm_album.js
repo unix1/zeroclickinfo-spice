@@ -1,13 +1,13 @@
-var ddg_spice_lastfm_album = function(api_result) {
+function ddg_spice_lastfm_album (api_result) {
     "use strict";
 
-    var skip = {
-        "album": 1,
-        "albums": 1,
-        "records": 1,
-        "cd": 1,
-        "cds": 1
-    };
+    var skip = [
+        "album",
+        "albums",
+        "records",
+        "cd",
+        "cds"
+    ];
 
     // Don't do anything if we find an error.
     if(api_result.error || !api_result.album || !api_result.album.name || !api_result.album.artist) {
@@ -27,7 +27,8 @@ var ddg_spice_lastfm_album = function(api_result) {
             header1           : api_result.album.name + " (Album)",
             source_name       : "Last.fm",
             source_url        : api_result.album.url,
-            template_normal   : "album"
+            force_no_fold     : true,
+            template_normal   : "lastfm_album"
         });
 
         $(document).ready(function() {

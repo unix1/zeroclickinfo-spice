@@ -1,10 +1,10 @@
-var ddg_spice_lastfm_artist_album = function(api_result) {
-    var skip = {
-        albums: 1,
-        records: 1,
-        cd: 1,
-        cds: 1
-    };
+function ddg_spice_lastfm_artist_album (api_result) {
+    var skip = [
+        "albums",
+        "records",
+        "cd",
+        "cds"
+    ];
 
     // Don't do anything if we find an error.
     if(api_result.error || !api_result.topalbums || !api_result.topalbums.album || api_result.topalbums.album.length === 0) {
@@ -19,7 +19,7 @@ var ddg_spice_lastfm_artist_album = function(api_result) {
             force_big_header  : true,
             source_name       : "Last.fm",
             source_url        : "http://www.last.fm/search?q=" + artist + "&type=album",
-            template_normal   : "artist_album"
+            template_normal   : "lastfm_artist_album"
         });
     }
 };

@@ -1,25 +1,21 @@
-<table class="drinks">
-	<thead>
-		<th>
-			Directions:
-		</th>
-		<th>
-			Ingredients:
-		</th>
-	</thead>
+{{! First tile which shows the directions.}}
+<div class="directions">
+    <div>Directions:</div>
+    <div>{{{condense procedure maxlen="170"}}}</div>
+</div>
 
-	<tbody>
-		<tr>
-			<td>
-				<p>{{procedure}}</p>
-			</td>
-			<td>
-				<ul>
-					{{#each ingredients}}
-						<li>{{this}}</li>
-					{{/each}}
-				</ul>
-			</td>
-		</tr>
-	</tbody>
-</table>
+{{! Second tile which shows the ingredients.}}
+<div class="ingredients">
+    <div>Ingredients:</div>
+    <ul>
+        {{#if isArray}}
+            {{#each ingredients}}
+                <li>{{this}}</li>
+            {{/each}}
+        {{else}}
+            {{#keys ingredients}}
+                <li>{{value}}</li>
+            {{/keys}}
+        {{/if}}
+    </ul>
+</div>

@@ -1,28 +1,27 @@
-
-
 #movie_data_box {
     display:block;
+    padding:2px;
+}
+
+#movie_data_box.half-width {
     width:40%;
     float:left;
-    padding:2px;
-    /* background:rgba(0,0,0,0.08); */
     border-right:1px solid rgba(0,0,0,0.1);
     margin-right:10px;
 }
 
 .movie_critics_rating {
-    font-weight:bold;
     color:gray;
 }
 
 .movie_star_rating {
-    color:red;
+    color:gold;
+    text-shadow: 1px 1px black, 0px 1px black
 }
 
 .movie_data_item {
     display:inline-block;
     padding-right:6px;
-    font-weight: bold;
     color:gray;
 }
 

@@ -1,10 +1,31 @@
-var ddg_spice_detect_lang = function(api_result) {
+function ddg_spice_detect_lang (api_result) {
     "use strict";
 
     // Check for any errors.
     if(!api_result || !api_result.data || !api_result.data.detections || api_result.data.detections.length === 0) {
         return;
     }
+
+    var query = "";
+    $("script").each(function() {
+        var matched, result;
+        matched = $(this).attr("src");
+        if(matched) {
+            result = matched.match(/\/js\/spice\/detect_lang\/([^\/]+)/);
+            if(result) {
+                query = decodeURIComponent(result[1]);
+            }
+        }
+    });
+
+    api_result.data.detections.sort(function(a, b) {
+        if(a.confidence > b.confidence) {
+            return -1;
+        } else if(a.confidence < b.confidence) {
+            return 1;
+        }
+        return 0;
+    });
 
     var expandLang = function(language) {
         var langs = {
@@ -95,8 +116,8 @@ var ddg_spice_detect_lang = function(api_result) {
 
     // Display the plug-in.
     Spice.render({
-        data             : api_result.data.detections[0],
-        header1          : "Language Detection (Detect Language)",
+        data             : api_result.data.detections,
+        header1          : query + " (Detect Language)",
         source_url       : "http://detectlanguage.com/",
         source_name      : "Detect Language",
         template_normal  : "detect_lang",

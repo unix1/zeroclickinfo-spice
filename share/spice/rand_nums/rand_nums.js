@@ -1,16 +1,27 @@
-function ddg_spice_rand_nums(response) {
+function ddg_spice_rand_nums(api_result) {
+    var min;
+    var max;
 
-	var query  = DDG.get_query();
-	var regexp = /^(rand|random) (numbers|nums)(?: (\-?[0-9]+)\-(\-?[0-9]+)|)$/i;
-	var match  = query.match(regexp);
-	var min    = match[3];
-	var max    = match[4];
+    // Get the original query.
+    // We're going to pass this to the header.
+    var query = "";
+    $("script").each(function() {
+        var matched, result;
+        matched = $(this).attr("src");
+        if(matched) {
+            result = matched.match(/\/js\/spice\/rand_nums\/([^\/]+)\/(.+)/);
+            if(result) {
+                min = result[1];
+                max = result[2];
+            }
+        }
+    });
 
-	if (min == undefined) min = 0;
-	if (max == undefined) max = 100;
+    min = min || 0;
+    max = max || 100;
 
     Spice.render({
-        data             : { 'numbers' : response },
+        data             : api_result,
         source_url       : 'http://www.random.org/integers/?num=100&min='
                             + min + '&max=' + max + '&col=5&base=10&format=html&rnd=new',
         source_name      : 'Random.org',

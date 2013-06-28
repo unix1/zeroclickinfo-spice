@@ -1,5 +1,5 @@
 // This function checks for errors, and it's also the one that calls Spice.render.
-var ddg_spice_lastfm = function(api_result, template) {
+function ddg_spice_lastfm (api_result, template) {
     "use strict";
 
     if(template === "similar") {
@@ -9,28 +9,29 @@ var ddg_spice_lastfm = function(api_result, template) {
     }
 
     // These words should be skipped in the isRelevant function.
-    var skip = {
-        "similar": 1,
-        "band": 1,
-        "bands": 1,
-        "musician": 1,
-        "musicians": 1,
-        "player": 1,
-        "artist": 1,
-        "artists": 1,
-        "performer": 1,
-        "performers": 1,
-        "singer": 1,
-        "singers": 1,
-        "rapper": 1,
-        "dj": 1,
-        "rappers": 1,
-        "vocalist": 1,
-        "vocalists": 1,
-        "djs": 1,
-        "songster": 1,
-        "songsters": 1
-    };
+    var skip = [
+        "similar",
+        "band",
+        "bands",
+        "musician",
+        "musicians",
+        "player",
+        "artist",
+        "artists",
+        "performer",
+        "performers",
+        "singer",
+        "singers",
+        "rapper",
+        "dj",
+        "rappers",
+        "vocalist",
+        "vocalists",
+        "djs",
+        "songster",
+        "songsters",
+        "to"
+    ];
 
     // Don't do anything if we find an error, or if the result is irrelevant.
     if(api_result.error || !api_result.artist || !api_result.artist.name) {
@@ -38,20 +39,22 @@ var ddg_spice_lastfm = function(api_result, template) {
     }
 
     // Display the plugin.
-    if(DDG.isRelevant(api_result.artist.name, skip)) {
+    if(DDG.isRelevant(api_result.artist.name, skip, 4, true)) {
         Spice.render({
             data             : api_result,
             force_big_header : true,
-            header1          : api_result.artist.name,
+            header1          : api_result.artist.name + " (Last.FM)",
             source_name      : "Last.fm",
             source_url       : api_result.artist.url,
-            template_normal  : "lastfm_artist"
+            force_no_fold    : true,
+            template_normal  : "lastfm_artist",
+            template_small   : "lastfm_artist_small"
         });
     }
 };
 
 // This function calls artist.handlebars, and it shows everything about the artist.
-var ddg_spice_lastfm_artist_all = function(api_result) {
+function ddg_spice_lastfm_artist_all (api_result) {
     "use strict";
 
     // Display the plugin.
@@ -70,7 +73,7 @@ var ddg_spice_lastfm_artist_all = function(api_result) {
 };
 
 // This function calls similar.handlebars, and it only shows the similar artists.
-var ddg_spice_lastfm_artist_similar = function(api_result) {
+function ddg_spice_lastfm_artist_similar (api_result) {
     "use strict";
 
     ddg_spice_lastfm(api_result, "similar");

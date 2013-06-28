@@ -12,13 +12,11 @@ topics "entertainment", "geek", "special_interest";
 icon_url "/i/xkcd.com.ico";
 code_url "https://github.com/duckduckgo/zeroclickinfo-spice/blob/master/lib/DDG/Spice/Xkcd.pm";
 attribution github => ["https://github.com/sdball", "Stephen Ball"],
-		twitter => ["https://twitter.com/StephenBallNC", "StephenBallNC"];
-status "enabled";
-
+            twitter => ["https://twitter.com/StephenBallNC", "StephenBallNC"];
 
 triggers startend => "xkcd";
 
-spice to => 'http://dynamic.xkcd.com/api-0/jsonp/comic/$1';
+spice to => 'http://xkcd.com/$1/info.0.json';
 spice wrap_jsonp_callback => 1;
 
 spice is_cached => 0;

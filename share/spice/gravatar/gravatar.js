@@ -8,7 +8,7 @@
 // gravatar gravatar@duckduckgo.com - shows information about the e-mail address.
 // gravatar matt - shows information about a user.
 
-var ddg_spice_gravatar = function(api_result) {
+function ddg_spice_gravatar (api_result) {
     // Check for errors.
     if(!api_result || !api_result.entry || api_result.entry.length === 0) {
         return;
@@ -21,7 +21,9 @@ var ddg_spice_gravatar = function(api_result) {
             return;
         }
 
-        if(entry.name.givenName && entry.name.familyName) {
+        if(entry.name.formatted) {
+            return entry.name.formatted;
+        } else if(entry.name.givenName && entry.name.familyName) {
             return entry.name.givenName + " " + entry.name.familyName;
         }
         return entry.displayName;
@@ -34,8 +36,9 @@ var ddg_spice_gravatar = function(api_result) {
         force_big_header  : true,
         source_name       : "Gravatar",
         source_url        : api_result.entry[0].profileUrl,
-        image_url         : api_result.entry[0].thumbnailUrl,
-        template_normal   : "gravatar"
+        image_url         : api_result.entry[0].thumbnailUrl + ".png",
+        template_normal   : "gravatar",
+        force_favicon_url : 'http://gravatar.com/favicon.ico'
     });
 };
 

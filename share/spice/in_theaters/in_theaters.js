@@ -1,4 +1,4 @@
-var ddg_spice_in_theaters = function(api_result) {
+function ddg_spice_in_theaters (api_result) {
 
     // Exit if we don't find any movies or if we see an error.
     if(api_result.error || !api_result.movies || api_result.movies.length === 0) {
@@ -25,69 +25,17 @@ var ddg_spice_in_theaters = function(api_result) {
         header = "Currently in Theaters";
     }
 
-    var image_proxy = "/iu/?u=";
     Spice.render({
-        data             : api_result,
-        header1          : header,
-        source_url       : "http://www.rottentomatoes.com/",
-        // The initial poster is set by the first movie.
-        image_url        : image_proxy + api_result.movies[0].posters.thumbnail,
-        source_name      : "Rotten Tomatoes",
-        template_normal  : "in_theaters",
-        force_big_header : true
-    });
-
-    // Get the size of the screen.
-    // If the screen is small, don't display the image.
-    var zero_click_image = $("#zero_click_image");
-    var checkWidth = function(width) {
-        if(width < 750) {
-            zero_click_image.addClass("hide");
-            $(".zero_click_snippet").attr("style", "margin-left: 0px !important; display: block;");
-        } else {
-            zero_click_image.removeClass("hide");
-            $(".zero_click_snippet").attr("style", "margin-left: 0px !important; display: block; width: 80%;");
-        }
-    };
-
-    // Monitor the size of the window.
-    checkWidth($(window).width());
-    $(window).resize(function() {
-        checkWidth($(window).width());
-    });
-
-    // This variable tracks the last movie that the user hovered on.
-    var last = 0;
-    // Remove all `img` tags first and start over.
-    // Why are we adding all the images instead of just updating the `src` attribute in $("#zero_click_image img")?
-    // Because if we do that, the browser will try to request for the image again.
-    zero_click_image.html("");
-    $(".movie").each(function(index) {
-        // We should show the first image and hide everything else by adding the class="hide" attribute.
-        if(index === 0) {
-            zero_click_image.append("<img style='height: 120px !important' id='Movie" + index + "' src='" + $(this).attr("data-image") + "'>");
-        } else {
-            zero_click_image.append("<img style='height: 120px !important' class='hide' id='Movie" + index + "' data-image='" + $(this).attr("data-image") + "'>");
-        }
-
-        // Show the image when we hover over the list of movies.
-        $(this).on("hover", function() {
-            // We wrap everything in a function to get hold of the index variable.
-            // Why? Because the computer is so fast that by the time we hover on a movie,
-            // index would point to the last element.
-            (function(index) {
-                var lastMovie = $("#Movie" + last);
-                var newMovie = $("#Movie" + index);
-                lastMovie.addClass("hide");
-                newMovie.removeClass("hide");
-
-                // Lazy loading. We should only load the image when the user hovered over it.
-                if(!newMovie.attr("src")) {
-                    newMovie.attr("src", newMovie.attr("data-image"));
-                }
-                last = index;
-            })(index);
-        });
+        header1                  : header,
+        source_url               : "http://www.rottentomatoes.com/",
+        source_name              : "Rotten Tomatoes",
+        template_normal          : "in_theaters",
+        force_big_header         : true,
+        template_frame           : "carousel",
+        carousel_css_id          : "in_theaters",
+        carousel_items           : api_result.movies,
+        carousel_template_detail : "in_theaters_details",
+        force_no_fold            : true
     });
 };
 
@@ -118,3 +66,31 @@ Handlebars.registerHelper("list", function(items, options) {
     }
     return out;
 });
+
+Handlebars.registerHelper("star_rating", function(score) {
+        var r = (score / 20) - 1,
+            s = "";
+
+        if (r > 0) {
+            for (var i = 0; i < r; i++) {
+                s += "&#9733;";
+            }
+        }
+
+        if (s.length === 0) {
+            s = "";
+        }
+
+        return s;
+});
+
+Handlebars.registerHelper("checkRating", function(critics_rating) {
+    return critics_rating || "No Rating";
+});
+
+Handlebars.registerHelper("checkScore", function(critics_score) {
+    if(critics_score === -1) {
+        return "";
+    }
+    return ": " + critics_score + "%";
+})
