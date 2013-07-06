@@ -1,4 +1,4 @@
-function ddg_spice_news (api_result) {
+function ddg_spice_news_carousel (api_result) {
     "use strict";
 
     // check for response

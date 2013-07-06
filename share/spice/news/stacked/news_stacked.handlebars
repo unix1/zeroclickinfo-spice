@@ -1,12 +1,14 @@
-<div>
-    <a href="{{{webUrl}}}">
-        <span class="news_title">{{condense webTitle maxlen="75"}}</span>
-        <small>&nbsp;-&nbsp;{{elapsedTime}}</small>
-    </a>
+{{with results.[0]}}
+    <div>
+        <a href="{{{webUrl}}}">
+            <span class="news_title">{{condense webTitle maxlen="75"}}</span>
+            <small>&nbsp;-&nbsp;{{elapsedTime}}</small>
+        </a>
 
-    <p class="news_snippet">
-        {{#strip_html fields.standfirst}}
-            {{condense this maxlen="200"}}
-        {{/strip_html}}
-    </p>
-</div>
+        <p class="news_snippet">
+            {{#strip_html fields.standfirst}}
+                {{condense this maxlen="200"}}
+            {{/strip_html}}
+        </p>
+    </div>
+{{/with}}

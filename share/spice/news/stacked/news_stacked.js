@@ -1,11 +1,11 @@
-function ddg_spice_news (api_result) {
+function ddg_spice_news_stacked (api_result) {
     "use strict";
 
     // check for response
     if (!api_result.response.status === "ok") return;
 
     Spice.render({
-        data             : api_result,
+        data             : api_result.response,
         source_name      : 'Guardian News',
         source_url       : 'http://www.guardian.co.uk',
         //force_big_header : 1,
@@ -13,7 +13,6 @@ function ddg_spice_news (api_result) {
         template_frame   : "normal",
         template_normal  : "news_stacked",
         carousel_css_id  : "news",
-        carousel_items   : api_result.response.results,
     });
 }
 
