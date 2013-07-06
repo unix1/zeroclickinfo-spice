@@ -1,0 +1,12 @@
+<li class="ddgc_item">
+    <a href="{{{webUrl}}}">
+        <span class="news_title">{{condense webTitle maxlen="75"}}</span>
+        <small>&nbsp;-&nbsp;{{elapsedTime}}</small>
+    </a>
+
+    <p class="news_snippet">
+        {{#strip_html fields.standfirst}}
+            {{condense this maxlen="200"}}
+        {{/strip_html}}
+    </p>
+</li>
