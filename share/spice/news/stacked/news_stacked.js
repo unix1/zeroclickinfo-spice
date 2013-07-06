@@ -10,9 +10,7 @@ function ddg_spice_news_stacked (api_result) {
         source_url       : 'http://www.guardian.co.uk',
         //force_big_header : 1,
         //header1          : 'News',
-        template_frame   : "normal",
         template_normal  : "news_stacked",
-        carousel_css_id  : "news",
     });
 }
 
