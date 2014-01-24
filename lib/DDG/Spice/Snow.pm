@@ -19,6 +19,8 @@ spice to => 'http://isitsnowingyet.org/api/check/$1/key/{{ENV{DDG_SPICE_SNOW_API
 
 triggers any => "snow", "snowing";
 
+spice proxy_cache_valid => '418 1d';
+
 my %snow = map { $_ => undef } (
     'is it going to snow',
     'going to snow',
@@ -35,18 +37,18 @@ my %snow = map { $_ => undef } (
 
 handle query_lc => sub {
     my $query = $_;
-    my $location = join(" ", $loc->city . ', ', $loc->region_name . ', ', $loc->country_name);
+    my $location = join (',', $loc->city,$loc->region_name,$loc->country_name);
 
-    if(exists $snow{$query}) {
-        return $location;
-    } elsif($query =~ /^(?:is[ ]it[ ])?
+    if (exists $snow{$query}) {
+        return $location, {is_cached => 0};
+    } elsif ($query =~ /^(?:is[ ]it[ ])?
                         (?:going[ ]to[ ])?
                         snow(?:ing)?[ ]?
                         (?:(?:here|now|yet)[ ]?)?
                         (?:in[ ](.*?))?
                         (?:[ ]today)?\??$/ix) {
-        $location = $1 || $location;
-        return $location;
+        return $1 if $1;
+        return $location, {is_cached => 0};
     }
     return;
 };
